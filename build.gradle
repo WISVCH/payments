@@ -1,0 +1,66 @@
+buildscript {
+    ext {
+        springBootVersion = '1.4.1.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'spring-boot'
+
+jar {
+    baseName = 'payments'
+    version = '0.0.1-SNAPSHOT'
+}
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    maven {
+        url "https://github.com/stil4m/maven-repository/raw/master/releases/"
+    }
+}
+
+configurations {
+    // We're using Jetty instead
+    compile.exclude module: "spring-boot-starter-tomcat"
+    // We're using HikariCP instead
+    compile.exclude module: "tomcat-jdbc"
+    // We're using Log4j2 instead
+    compile.exclude module: "spring-boot-starter-logging"
+}
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile('org.springframework.boot:spring-boot-devtools')
+    compile('org.springframework.boot:spring-boot-starter-security')
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile("org.springframework.boot:spring-boot-starter-log4j2")
+    compile("org.springframework.boot:spring-boot-starter-jetty")
+
+    compile('org.projectlombok:lombok')
+    compile("org.hibernate:hibernate-validator")
+    compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+    compile("com.zaxxer:HikariCP")
+    compile("org.flywaydb:flyway-core:4.0.1")
+    compile("org.webjars:bootstrap:3.3.7-1")
+
+    compile("org.thymeleaf:thymeleaf-spring4:3.0.0.RELEASE")
+    compile("org.thymeleaf:thymeleaf:3.0.0.RELEASE")
+    compile("org.thymeleaf.extras:thymeleaf-extras-springsecurity4:3.0.0.RELEASE")
+
+    compile("nl.stil4m:mollie-api:2.1.0")
+
+    runtime('org.postgresql:postgresql')
+    runtime("org.hsqldb:hsqldb")
+
+    testCompile 'io.rest-assured:rest-assured:3.0.1'
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+}
