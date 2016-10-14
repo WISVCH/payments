@@ -23,7 +23,7 @@ import static io.restassured.config.RedirectConfig.redirectConfig;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-public class RestIntegrationTest {
+public abstract class RestIntegrationTest {
     @Value("${local.server.port}")
     int port;
 
@@ -53,5 +53,4 @@ public class RestIntegrationTest {
     public void tearDownRestIntegrationTest() {
         RestAssured.reset();
     }
-
 }
