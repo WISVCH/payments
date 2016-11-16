@@ -1,5 +1,6 @@
 package ch.wisv.payments.rest;
 
+import ch.wisv.payments.exception.EmptyOrderException;
 import ch.wisv.payments.exception.ProductLimitExceededException;
 import ch.wisv.payments.model.Order;
 import ch.wisv.payments.model.OrderRequest;
@@ -39,6 +40,10 @@ public class OrderServiceImpl implements OrderService {
                 .map(key -> productRepository.findOneByKey(key))
                 .filter(Optional::isPresent)
                 .map(Optional::get).collect(Collectors.toList());
+
+        if (products.isEmpty()) {
+            throw new EmptyOrderException("No (valid) products in this order");
+        }
 
         // Throw exceptions if product limits are exceeded
         validateProductLimits(products);
