@@ -15,13 +15,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/api").permitAll()
+                .antMatchers("/api/**").permitAll()
                 .antMatchers("/login**", "/webjars/**", "/fonts/**").permitAll()
                 .anyRequest().authenticated()
-                .and()
+            .and()
                 .formLogin()
                 .loginPage("/login")
-                .permitAll();
+                .permitAll()
+            .and().csrf().disable();
     }
 
     @Autowired
