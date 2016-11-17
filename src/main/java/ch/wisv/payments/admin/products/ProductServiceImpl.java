@@ -87,6 +87,8 @@ public class ProductServiceImpl implements ProductService {
             product.setDescription(productRequest.getDescription());
             product.setCommittee(committee);
             product.setPrice(productRequest.getPrice());
+            product.setLimitPerOrder(productRequest.getLimitPerOrder());
+            product.setAvailableProducts(productRequest.getAvailableProducts());
 
             product = productRepository.saveAndFlush(product);
 
@@ -123,10 +125,8 @@ public class ProductServiceImpl implements ProductService {
                 .filter(p -> p.equals(product))
                 .count();
 
-        boolean ticketsAvailable = numberOfProducts < product.getAvailableProducts()
+        return numberOfProducts < product.getAvailableProducts()
                 || product.getAvailableProducts() == 0;
-
-        return ticketsAvailable;
     }
 
     @Override

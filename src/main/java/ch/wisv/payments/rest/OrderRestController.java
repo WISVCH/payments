@@ -38,4 +38,15 @@ public class OrderRestController {
 
         return new ResponseEntity<>(new OrderResponse(order), HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/status", method = RequestMethod.POST)
+    public ResponseEntity<?> updateOrderStatus(@RequestParam(name = "id") String orderReference) {
+        paymentService.updateStatus(orderReference);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/status", method = {RequestMethod.GET, RequestMethod.POST}, params = "testByMollie")
+    public ResponseEntity<?> handleMollieTestCall() {
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

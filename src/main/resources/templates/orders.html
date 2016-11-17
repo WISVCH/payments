@@ -36,8 +36,9 @@
         <div th:replace="fragments/sidebar :: sidebar"></div>
     </div>
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div th:replace="fragments/messages :: messages"></div>
+
         <h1 class="page-header">Orders</h1>
-        <p>Welcome to the orders page!</p>
 
         <h2>Latest orders</h2>
         <div class="table-responsive">
@@ -51,10 +52,12 @@
                     <th>Status</th>
                     <th>Name</th>
                     <th>Email</th>
+                    <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="order : ${orders}">
+                    <!--/*@thymesVar id="order" type="ch.wisv.payments.model.Order"*/-->
                     <td th:text="${order.id}">Row 1 Data 1</td>
                     <td th:text="${order.getProducts().get(0).getCommittee().getName().getName()}"></td>
                     <td>
@@ -66,6 +69,18 @@
                     <td th:text="${order.status}">Row 1 Data 1</td>
                     <td th:text="${order.name}">Row 1 Data 3</td>
                     <td th:text="${order.email}">Row 1 Data 5</td>
+                    <td>
+                        <form th:action="@{/orders/update/} + ${order.getPublicReference()}" method="post">
+                            <div class="btn-group" role="group" aria-label="...">
+                                <!--<a class="btn btn-info" th:href="@{/products/edit/} + ${product.id}" href="#">-->
+                                <!--<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>-->
+                                <!--</a>-->
+                                <button type="submit" class="btn btn-info" aria-label="Update">
+                                    <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+                                </button>
+                            </div>
+                        </form>
+                    </td>
                 </tr>
                 </tbody>
             </table>

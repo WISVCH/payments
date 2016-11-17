@@ -29,6 +29,5 @@ public class ProductRestController {
         Set<Product> productByCommittee = productService.getProductByCommittee(committeeName, year);
         return productByCommittee.stream().map(p -> new ProductResponse(p, productService.isProductAvailable(p.getId())))
                 .collect(Collectors.toSet());
-
     }
 }

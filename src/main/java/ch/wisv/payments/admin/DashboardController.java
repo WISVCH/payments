@@ -25,13 +25,6 @@ public class DashboardController {
         return "index";
     }
 
-    @RequestMapping("/orders")
-    String orders(Model model) {
-        model.addAttribute("orders", orderService.getAllOrders());
-
-        return "orders";
-    }
-
     @GetMapping("/login")
     String login(Model model) {
         return "login";

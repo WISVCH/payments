@@ -7,7 +7,6 @@ import ch.wisv.payments.model.Product;
 import ch.wisv.payments.rest.repository.OrderRepository;
 import nl.stil4m.mollie.Client;
 import nl.stil4m.mollie.ClientBuilder;
-import nl.stil4m.mollie.DynamicClient;
 import nl.stil4m.mollie.ResponseOrError;
 import nl.stil4m.mollie.domain.CreatePayment;
 import nl.stil4m.mollie.domain.CreatedPayment;
@@ -89,13 +88,13 @@ public class MolliePaymentService implements PaymentService {
 
     @Override
     public Order updateStatus(String orderReference) {
-        Order order = orderRepository.findByProviderReference(orderReference)
+        Order order = orderRepository.findByPublicReference(orderReference)
                 .orElseThrow(() -> new RuntimeException("Order with providerReference " + orderReference + " not found"));
 
         // This try is for the Mollie API internal HttpClient
         try {
             // Request a payment from Mollie
-            ResponseOrError<Payment> paymentResponseOrError = mollie.payments().get(orderReference);
+            ResponseOrError<Payment> paymentResponseOrError = mollie.payments().get(order.getProviderReference());
 
             // If the request was a success, we can update the order
             if (paymentResponseOrError.getSuccess()) {

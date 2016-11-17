@@ -149,6 +149,7 @@
                 </tr>
                 </thead>
                 <tbody>
+                <!--/*@thymesVar id="product" type="ch.wisv.payments.model.Product"*/-->
                 <tr th:each="product : ${products}">
                     <td th:text="${product.id}">Row 1 Data 1</td>
                     <td th:text="${product.committee.name.getName()} + ' '+ ${product.committee.year}">Row 1 Data 2</td>
