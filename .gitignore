@@ -68,3 +68,7 @@ fabric.properties
 hs_err_pid*
 
 application.properties
+.gradle/
+.idea/
+build/
+src/main/resources/templates/fragments/product/
