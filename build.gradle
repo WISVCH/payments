@@ -26,6 +26,9 @@ repositories {
     maven {
         url "https://github.com/stil4m/maven-repository/raw/master/releases/"
     }
+    maven {
+        url 'https://dl.bintray.com/wisvch/maven'
+    }
 }
 
 configurations {
@@ -57,6 +60,11 @@ dependencies {
     compile("org.thymeleaf.extras:thymeleaf-extras-springsecurity4:3.0.0.RELEASE")
 
     compile("nl.stil4m:mollie-api:2.1.0")
+    compile("ch.wisv:wisvch-connect-client:1.2.6.0") {
+        // Workaround for https://github.com/mitreid-connect/OpenID-Connect-Java-Spring-Server/pull/1084
+        exclude module: 'bcprov-jdk15on'
+    }
+    compile('org.bouncycastle:bcprov-jdk15on:1.52+')
 
     runtime('org.postgresql:postgresql')
     runtime("org.hsqldb:hsqldb")
