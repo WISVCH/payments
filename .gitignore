@@ -72,3 +72,4 @@ application.properties
 .idea/
 build/
 src/main/resources/templates/fragments/product/
+config/oidc-client-registration.json
