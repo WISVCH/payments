@@ -72,3 +72,12 @@ dependencies {
     testCompile 'io.rest-assured:rest-assured:3.0.1'
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
+
+task dev(type: org.springframework.boot.gradle.run.BootRunTask) {
+    group = 'Application'
+    doFirst() {
+        main = project.mainClassName
+        classpath = sourceSets.main.runtimeClasspath
+        systemProperty 'spring.profiles.active', 'dev'
+    }
+}
