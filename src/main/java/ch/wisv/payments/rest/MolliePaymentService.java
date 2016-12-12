@@ -54,7 +54,7 @@ public class MolliePaymentService implements PaymentService {
         amount += 0.29;
 
         CreatePayment payment = new CreatePayment(method, amount, "W.I.S.V. 'Christiaan Huygens' Payments",
-                returnUrl + "?order=" + order.getId(), metadata);
+                returnUrl + "?reference=" + order.getPublicReference(), metadata);
 
         //First try is for IOExceptions coming from the Mollie Client.
         try {
