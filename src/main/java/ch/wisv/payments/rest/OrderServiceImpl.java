@@ -4,9 +4,11 @@ import ch.wisv.payments.exception.EmptyOrderException;
 import ch.wisv.payments.exception.ProductLimitExceededException;
 import ch.wisv.payments.model.Order;
 import ch.wisv.payments.model.OrderRequest;
+import ch.wisv.payments.model.OrderStatus;
 import ch.wisv.payments.model.Product;
 import ch.wisv.payments.rest.repository.OrderRepository;
 import ch.wisv.payments.rest.repository.ProductRepository;
+import lombok.Synchronized;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +37,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Synchronized
     public Order createOrderFromRequest(OrderRequest request) throws RuntimeException {
         List<Product> products = request.getProductKeys().stream()
                 .map(key -> productRepository.findOneByKey(key))
@@ -78,7 +81,11 @@ public class OrderServiceImpl implements OrderService {
 
             List<Order> ordersWithProduct = orderRepository.findAllByProductsId(product.getId());
 
-            long productsSold = ordersWithProduct.stream().flatMap(order -> order.getProducts().stream()).count();
+            long productsSold = ordersWithProduct.stream().
+                    filter(o -> o.getStatus().equals(OrderStatus.WAITING) || o.getStatus().equals(OrderStatus.PAID)).
+                    flatMap(order -> order.getProducts().stream()).
+                    filter(p -> p.getId() == product.getId()).
+                    count();
 
             if (product.getAvailableProducts() >= productsSold + orderMap.get(product) || product.getAvailableProducts() == 0) {
                 if (product.getLimitPerOrder() < orderMap.get(product) && product.getLimitPerOrder() != 0) {
@@ -111,10 +118,5 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private class OrderNotFoundException extends RuntimeException {
-    }
-
-    private class InvalidOrderException extends RuntimeException {
-        InvalidOrderException(String s) {
-        }
     }
 }

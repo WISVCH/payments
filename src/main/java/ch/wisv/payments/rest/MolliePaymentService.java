@@ -23,6 +23,7 @@ import java.util.Map;
 public class MolliePaymentService implements PaymentService {
 
     private OrderRepository orderRepository;
+    private final MailService mailService;
 
     private Client mollie;
 
@@ -33,9 +34,10 @@ public class MolliePaymentService implements PaymentService {
     String returnUrl;
 
     @Autowired
-    public MolliePaymentService(OrderRepository orderRepository, @Value("${a5l.molliekey:null}") String apiKey) {
+    public MolliePaymentService(OrderRepository orderRepository, @Value("${a5l.molliekey:null}") String apiKey, MailService mailService) {
         this.orderRepository = orderRepository;
         this.mollie = new ClientBuilder().withApiKey(apiKey).build();
+        this.mailService = mailService;
     }
 
     public OrderResponse registerOrder(Order order) {
@@ -115,6 +117,7 @@ public class MolliePaymentService implements PaymentService {
                     }
                     case "paid": {
                         order.setStatus(OrderStatus.PAID);
+                        mailService.sendOrderConfirmation(order);
                         break;
                     }
                     case "paidout": {

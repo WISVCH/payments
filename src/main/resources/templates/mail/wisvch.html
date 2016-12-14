@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head lang="en">
+    <title>W.I.S.V. 'Christiaan Huygens' Order Confirmation</title>
+    <style type="text/css">
+        .tickets tr td {
+            padding: 8px;
+            border-top: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body style="margin: 0; padding: 0; font-family: 'Merriweather', 'Helvetica Neue', Arial, sans-serif;">
+<table cellpadding="0" cellspacing="0" width="100%">
+    <tbody>
+    <tr>
+        <td>
+            <table align="center" cellpadding="0" cellspacing="0" width="600" style="border-collapse: collapse">
+                <tbody>
+                <tr>
+                    <td align="center" bgcolor="#f0f8ff"
+                        style="padding: 20px 0 20px 0;border-bottom: 10px solid #063681;">
+                        <img src="https://wisv.ch/assets/logo.png" width="400" style="display: block;">
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" bgcolor="" style="padding: 10px 20px;">
+                        <table cellpadding="0" cellspacing="0" width="100%">
+                            <tbody>
+                            <tr>
+                                <td style="padding: 20px 0 0 0;">
+                                    <p>Dear <span th:text="${order.getName()}">user</span>,</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style=" padding: 10px 0;">
+                                    <p th:text="${order.getPublicReference()}">Order reference: #reference</p>
+                                    <p>This is your order confirmation. We have received your payment in good order.</p>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <table border="0" cellpadding="20" cellspacing="0" width="600" id="emailContainer"
+                                           style="">
+                                        <thead style="">
+                                        <tr style="">
+                                            <th align="left" valign="top"
+                                                style="padding: 8px; border-bottom: 2px solid #ccc;">
+                                                <span>Event</span>
+                                            </th>
+                                            <th align="left" valign="top"
+                                                style="border-bottom: 2px solid #ccc; padding: 8px;">
+                                                <span>Name</span>
+                                            </th>
+                                            <th align="left" valign="top"
+                                                style="border-bottom: 2px solid #ccc; padding: 8px;">
+                                                <span>Price</span>
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody class="tickets">
+                                        <tr th:each="product : ${order.getProducts()}">
+                                            <td th:text="${product.getName()}">Product Name</td>
+                                            <td th:text="${order.getName()}">User Name</td>
+                                            <td th:text="${product.getPrice()}">Product price</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
