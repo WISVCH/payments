@@ -1,80 +1,31 @@
 package ch.wisv.payments.rest;
 
 import ch.wisv.payments.RestIntegrationTest;
-import ch.wisv.payments.rest.repository.OrderRepository;
-import org.junit.After;
-import org.junit.Before;
+import ch.wisv.payments.model.Order;
+import ch.wisv.payments.model.OrderRequest;
+import ch.wisv.payments.model.OrderResponse;
+import ch.wisv.payments.model.Product;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.Mockito;
+import org.springframework.http.ResponseEntity;
+
+import java.util.Collections;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class OrderRestControllerIntegrationTest extends RestIntegrationTest {
 
-    @Autowired
-    OrderRepository orderRepository;
-
-    @Before
-    public void setUp() {
-
-    }
-
-    @After
-    public void tearDown() {
-
-    }
-
     @Test
-    public void requestPaymentSingleProduct() {
+    public void testRequestPayment() {
+        Product product = addProduct();
+        OrderRequest request = new OrderRequest();
+        request.setEmail("test@mail.com");
+        request.setName("Test Name");
+        request.setProductKeys(Collections.singletonList(product.getKey()));
 
+        ResponseEntity<OrderResponse> responseEntity = restTemplate.postForEntity("/api/orders", request, OrderResponse.class);
+
+        Mockito.verify(paymentService, Mockito.atLeastOnce()).registerOrder(Mockito.any(Order.class));
+        assertThat(responseEntity.getStatusCodeValue()).isEqualTo(201);
     }
-
-    @Test
-    public void requestPaymentSingleProductInGroup() {
-
-    }
-
-    @Test
-    public void requestPaymentSingleNonExistingProduct() {
-
-    }
-
-    @Test
-    public void requestPaymentMultipleProductInSameGroup() {
-
-    }
-
-    @Test
-    public void requestPaymentMultipleProductDifferentGroups() {
-
-    }
-
-    @Test
-    public void requestPaymentMultipleProductsOneInGroup() {
-
-    }
-
-    @Test
-    public void requestPaymentMultipleProductsOneNonExistent() {
-
-    }
-
-    @Test
-    public void requestPaymentEmptyName() throws Exception {
-
-    }
-
-    @Test
-    public void requestPaymentEmptyEmail() throws Exception {
-
-    }
-
-    @Test
-    public void requestPaymentInvalidEmail() throws Exception {
-
-    }
-
-    @Test
-    public void getOrderStatus() throws Exception {
-
-    }
-
 }
