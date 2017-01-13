@@ -2,7 +2,6 @@ package ch.wisv.payments.model;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.hibernate.validator.constraints.URL;
 
 import java.util.List;
 
@@ -17,6 +16,6 @@ public class OrderRequest {
     @NotEmpty
     String email;
 
-    @URL
+    @NotEmpty
     String returnUrl;
 }
