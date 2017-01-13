@@ -34,4 +34,7 @@ public class ProductRequest {
     @Getter
     @Setter
     int availableProducts = 0;
+    @Getter
+    @Setter
+    String returnURL;
 }

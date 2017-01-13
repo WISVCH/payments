@@ -27,10 +27,10 @@ public class MolliePaymentService implements PaymentService {
 
     private Client mollie;
 
-    @Value("${a5l.molliekey:null}")
+    @Value("${payments.molliekey:null}")
     String apiKey;
 
-    @Value("${a5l.paymentReturnUrl}")
+    @Value("${payments.paymentReturnUrl}")
     String returnUrl;
 
     @Autowired

@@ -55,9 +55,10 @@ dependencies {
     compile("com.zaxxer:HikariCP")
     compile("org.flywaydb:flyway-core:4.0.1")
     compile("org.webjars:bootstrap:3.3.7-1")
+    compile("org.webjars.bower:wisvch-bootstrap-theme:0.0.3")
 
-    compile("org.thymeleaf:thymeleaf-spring4:3.0.0.RELEASE")
-    compile("org.thymeleaf:thymeleaf:3.0.0.RELEASE")
+    compile("org.thymeleaf:thymeleaf-spring4:3.0.3.RELEASE")
+    compile("org.thymeleaf:thymeleaf:3.0.3.RELEASE")
     compile("org.thymeleaf.extras:thymeleaf-extras-springsecurity4:3.0.0.RELEASE")
 
     compile("nl.stil4m:mollie-api:2.1.0")

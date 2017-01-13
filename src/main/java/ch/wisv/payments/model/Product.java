@@ -54,7 +54,7 @@ public class Product {
 
     @Getter
     @Setter
-    @Value("${a5l.paymentReturnUrl}")
+    @Value("${payments.paymentReturnUrl}")
     private String returnUrl;
 
     public Product(Committee committee, String name, String description, float price, int limitPerOrder, int availableProducts) {

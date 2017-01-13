@@ -50,6 +50,7 @@ public class ProductController {
         productRequest.setCommitteeId(product.getCommittee().getId());
         productRequest.setAvailableProducts(product.getAvailableProducts());
         productRequest.setLimitPerOrder(product.getLimitPerOrder());
+        productRequest.setReturnURL(product.getReturnUrl());
 
         if (product.getProductGroup() != null) {
             productRequest.setGroupId(product.getProductGroup().getId());
