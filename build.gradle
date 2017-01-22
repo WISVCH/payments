@@ -17,7 +17,13 @@ apply plugin: 'org.springframework.boot'
 jar {
     baseName = 'payments'
     version = '0.0.1-SNAPSHOT'
+    archiveName = "${baseName}.${extension}"
 }
+
+springBoot {
+    executable = true
+}
+
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
