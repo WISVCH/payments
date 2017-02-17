@@ -29,21 +29,20 @@ Make sure to include tests and documentation.
 If Travis isn't happy, we're not happy.
 
 #Running
-### Tools
--   [PostgresQL](https://www.postgresql.org/)
--   [mailcatcher](https://mailcatcher.me/), mailcatcher creates a mailserver locally on your pc. All mail sent from the API is cought here, you end up with a mailbox with every outgoing mailaddress. Unix-like systems: `gem install mailcatcher`. Windows users can try mailcatcher as well, but [Papercut](https://github.com/changemakerstudios/papercut) has an easier installation. 
-
-### Usage
+## From IntelliJ
 1.  Import the project into IntelliJ IDEA, we really recommend using [IntelliJ IDEA Ultimate Edition](https://www.jetbrains.com/idea/), since it includes all the support for Spring. You could use another IDE, but we do not recommend this
 2.  Make sure you have installed the `Lombok Plugin`
 3.  Enable annotation processing, this can be enabled in `Settings > Build, Execution, Deployment > Compiler > Annotation Processors`. Here you have to check the checkmark that says `Enable Annotation Processors`
-4.  Copy `config/application.properties.sample` to `config/application.properties`. The sample properties assume a working PostgreSQL installation running in the background.
+4.  Copy `config/application.properties.sample` to `config/application.properties`.
 
   You should change:
-  - `spring.datasource.[…]` (`url`, `username`, `password`) to your database url and credentials
   - `payments.molliekey` and `payments.returnUrl` to their respective keys if you have those
+  - Add the group that you are a part of to the `payments.admin.groups`
 
 5.  Right click the `Application` class (`src -> main -> java -> ch.wisv.payments`) and choose `Run`. Terminate the process (you don't have to wait for it to finish starting). Now go to the Run/Debug Configuration window `Run -> Edit Configurations` choose the `Spring Boot` configuration called `Application`. Enable the dev profile for this configuration by entering `dev` in the `Active Profiles` box.
 
-### Build
+## Running without IntelliJ
+It is also possible to run without IntelliJ. This can be done by performing all the previous instructions `1-4`, after this run the `./gradlew dev` command.
+
+## Build
 To generate a runnable JAR file, make sure that you have followed all the instructions under the **run** section. When you have done so, run `./gradlew build`. This command will run all tests, and create a runnable JAR file in the `./build` folder. You could also run `Build` from the gradle view in IntelliJ IDEA.
