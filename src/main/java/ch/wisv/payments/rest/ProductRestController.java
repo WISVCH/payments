@@ -5,6 +5,7 @@ import ch.wisv.payments.model.CommitteeEnum;
 import ch.wisv.payments.model.Product;
 import ch.wisv.payments.model.ProductResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +14,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
+@CrossOrigin
 @RequestMapping("api/products")
 public class ProductRestController {
 
