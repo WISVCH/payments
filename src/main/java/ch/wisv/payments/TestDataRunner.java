@@ -47,21 +47,27 @@ public class TestDataRunner implements CommandLineRunner {
                 new ProductGroup("AkCie 2016", "Group for all AkCie activities", committee2));
 
         Product sympoStudent = productRepository.save(
-                new Product(committee5, "Student Ticket", "Ticket for students", 10.00F, 0, 0));
-        Product sympoBurger = productRepository.save(
-                new Product(committee5, "Regular Ticket", "Ticket for non-students", 20.00F, 0, 0));
+                new Product(committee5, "Student", "Ticket for students", 5.00F, 0, 0));
+        Product sympoTUDelft = productRepository.save(
+                new Product(committee5, "Alumni/TU Delft employee", "Ticket for Alumni/TU Delft employees", 25.00F, 0, 0));
+        Product sympoNgiNGN = productRepository.save(
+                new Product(committee5, "Ngi-NGN employee", "Ticket for Ngi-NGN employees", 25.00F, 0, 0));
+        Product sympoExternal = productRepository.save(
+                new Product(committee5, "External", "Ticket for external visitors", 80.00F, 0, 0));
 
         productService.addProductToGroup(sympoStudent, sympoGroup);
-        productService.addProductToGroup(sympoBurger, sympoGroup);
+        productService.addProductToGroup(sympoTUDelft, sympoGroup);
+        productService.addProductToGroup(sympoNgiNGN, sympoGroup);
+        productService.addProductToGroup(sympoExternal, sympoGroup);
 
         Order order1 = orderRepository.save(
                 new Order(Collections.singletonList(sympoStudent), "Alice Bobson", "alice@bobson.com"));
         Order order2 = orderRepository.save(
                 new Order(Arrays.asList(sympoStudent, sympoStudent), "Bob Charleston", "bob@charleston.com"));
         Order order3 = orderRepository.save(
-                new Order(Collections.singletonList(sympoBurger), "Charlie Dodson", "charlie@dodson.com"));
+                new Order(Collections.singletonList(sympoExternal), "Charlie Dodson", "charlie@dodson.com"));
         Order order4 = orderRepository.save(
-                new Order(Arrays.asList(sympoBurger, sympoStudent), "Dick Edison", "dick@edison.com"));
+                new Order(Arrays.asList(sympoExternal, sympoStudent), "Dick Edison", "dick@edison.com"));
 
 
     }
