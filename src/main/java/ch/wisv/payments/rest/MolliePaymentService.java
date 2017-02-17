@@ -27,14 +27,11 @@ public class MolliePaymentService implements PaymentService {
 
     private Client mollie;
 
-    @Value("${payments.molliekey:null}")
-    String apiKey;
-
     @Value("${payments.paymentReturnUrl}")
     String returnUrl;
 
     @Autowired
-    public MolliePaymentService(OrderRepository orderRepository, @Value("${a5l.molliekey:null}") String apiKey, MailService mailService) {
+    public MolliePaymentService(OrderRepository orderRepository, @Value("${payments.molliekey:null}") String apiKey, MailService mailService) {
         this.orderRepository = orderRepository;
         this.mollie = new ClientBuilder().withApiKey(apiKey).build();
         this.mailService = mailService;
