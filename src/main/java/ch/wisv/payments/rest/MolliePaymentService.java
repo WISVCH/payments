@@ -42,8 +42,14 @@ public class MolliePaymentService implements PaymentService {
 
         String method = "ideal";
 
+        // If the String {reference} is present in the url, this is the place to put the public reference
         if (order.getReturnURL() != null) {
             returnUrl = order.getReturnURL();
+            if (!returnUrl.contains("{reference}")) {
+                returnUrl = returnUrl + "?reference=" + order.getPublicReference();
+            } else {
+                returnUrl = returnUrl.replace("{reference}", order.getPublicReference());
+            }
         }
 
         double amount = order.getProducts().stream()
@@ -53,7 +59,7 @@ public class MolliePaymentService implements PaymentService {
         amount += 0.29;
 
         CreatePayment payment = new CreatePayment(method, amount, "W.I.S.V. 'Christiaan Huygens' Payments",
-                returnUrl + "?reference=" + order.getPublicReference(), metadata);
+                returnUrl, metadata);
 
         //First try is for IOExceptions coming from the Mollie Client.
         try {
