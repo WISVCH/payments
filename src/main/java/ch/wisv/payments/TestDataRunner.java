@@ -7,6 +7,7 @@ import ch.wisv.payments.rest.repository.OrderRepository;
 import ch.wisv.payments.rest.repository.ProductGroupRepository;
 import ch.wisv.payments.rest.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +15,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 @Component
+@Profile("dev")
 public class TestDataRunner implements CommandLineRunner {
     private OrderRepository orderRepository;
     private ProductGroupRepository productGroupRepository;
