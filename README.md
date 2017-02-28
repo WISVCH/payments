@@ -46,3 +46,11 @@ It is also possible to run without IntelliJ. This can be done by performing all 
 
 ## Build
 To generate a runnable JAR file, make sure that you have followed all the instructions under the **run** section. When you have done so, run `./gradlew build`. This command will run all tests, and create a runnable JAR file in the `./build` folder. You could also run `Build` from the gradle view in IntelliJ IDEA.
+
+## Docker
+To run a docker container with payments issue the following commands:
+```bash
+./gradlew build
+docker build -t payments
+docker run -e "SPRING_PROFILES_ACTIVE=production" -e "SPRING_MAIL_HOST=localhost" -e "SPRING_MAIL_PORT=1025" -e "PAYMENTS_MAIL_SENDER=" -e "SPRING_DATASOURCE_URL=jdbc:hsqldb:mem:payments" -e "SPRING_DATASOURCE_USERNAME=sa" -e "SPRING_DATASOURCE_PASSWORD=" -e "PAYMENTS_MOLLIEKEY=${FILL_MOLLIEKEY_HERE}" -e "PAYMENTS_ADMIN_GROUPS=chbeheer,bestuur,hoothub,${SOME_GROUP_YOU_ARE_IN}" -p 8080:8080 payments:latest
+```
