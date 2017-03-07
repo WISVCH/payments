@@ -58,7 +58,7 @@ public class MolliePaymentService implements PaymentService {
         //First try is for IOExceptions coming from the Mollie Client.
         try {
             // Create the payment over at Mollie
-            ResponseOrError<R> molliePayment = mollie.payments().create(payment);
+            ResponseOrError<Payment> molliePayment = mollie.payments().create(payment);
 
             if (molliePayment.getSuccess()) {
                 // All good, update the order
@@ -75,14 +75,13 @@ public class MolliePaymentService implements PaymentService {
         }
     }
 
-    private void updateOrder(Order order, ResponseOrError<CreatedPayment> molliePayment) {
+    private void updateOrder(Order order, ResponseOrError<Payment> molliePayment) {
         // Insert the Mollie ID for future providerReference
         order.setProviderReference(molliePayment.getData().getId());
-        order.setPaymentURL(molliePayment.getData().getLinks().getPaymentUrl());
         order.setStatus(OrderStatus.WAITING);
 
         // Save the changes to the order
-        orderRepository.save(order);
+        orderRepository.saveAndFlush(order);
     }
 
     @Override
