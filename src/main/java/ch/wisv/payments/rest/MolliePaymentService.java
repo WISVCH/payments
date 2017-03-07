@@ -9,7 +9,6 @@ import nl.stil4m.mollie.Client;
 import nl.stil4m.mollie.ClientBuilder;
 import nl.stil4m.mollie.ResponseOrError;
 import nl.stil4m.mollie.domain.CreatePayment;
-import nl.stil4m.mollie.domain.CreatedPayment;
 import nl.stil4m.mollie.domain.Payment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class MolliePaymentService implements PaymentService {
@@ -40,7 +40,7 @@ public class MolliePaymentService implements PaymentService {
     public OrderResponse registerOrder(Order order) {
         Map<String, Object> metadata = new HashMap<>();
 
-        String method = "ideal";
+        Optional<String> method = Optional.of("ideal");
 
         if (order.getReturnURL() != null) {
             returnUrl = order.getReturnURL();
@@ -53,12 +53,12 @@ public class MolliePaymentService implements PaymentService {
         amount += 0.29;
 
         CreatePayment payment = new CreatePayment(method, amount, "W.I.S.V. 'Christiaan Huygens' Payments",
-                returnUrl + "?reference=" + order.getPublicReference(), metadata);
+                returnUrl + "?reference=" + order.getPublicReference(), Optional.of(returnUrl), metadata);
 
         //First try is for IOExceptions coming from the Mollie Client.
         try {
             // Create the payment over at Mollie
-            ResponseOrError<CreatedPayment> molliePayment = mollie.payments().create(payment);
+            ResponseOrError<R> molliePayment = mollie.payments().create(payment);
 
             if (molliePayment.getSuccess()) {
                 // All good, update the order
