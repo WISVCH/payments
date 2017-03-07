@@ -112,8 +112,10 @@ public class MolliePaymentService implements PaymentService {
                         break;
                     }
                     case "paid": {
+                        if(!order.getStatus().equals(OrderStatus.PAID)){
+                            mailService.sendOrderConfirmation(order);
+                        }
                         order.setStatus(OrderStatus.PAID);
-                        mailService.sendOrderConfirmation(order);
                         break;
                     }
                     case "paidout": {
