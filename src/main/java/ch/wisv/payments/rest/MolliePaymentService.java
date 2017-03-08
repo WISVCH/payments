@@ -30,6 +30,9 @@ public class MolliePaymentService implements PaymentService {
     @Value("${payments.paymentReturnUrl}")
     String returnUrl;
 
+    @Value("${payments.returnUrl}")
+    String webhookUrl;
+
     @Autowired
     public MolliePaymentService(OrderRepository orderRepository, @Value("${payments.molliekey:null}") String apiKey, MailService mailService) {
         this.orderRepository = orderRepository;
@@ -53,7 +56,7 @@ public class MolliePaymentService implements PaymentService {
         amount += 0.29;
 
         CreatePayment payment = new CreatePayment(method, amount, "W.I.S.V. 'Christiaan Huygens' Payments",
-                returnUrl + "?reference=" + order.getPublicReference(), Optional.of(returnUrl), metadata);
+                returnUrl + "?reference=" + order.getPublicReference(), Optional.of(webhookUrl), metadata);
 
         //First try is for IOExceptions coming from the Mollie Client.
         try {
