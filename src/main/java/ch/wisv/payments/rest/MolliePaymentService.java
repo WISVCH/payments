@@ -9,7 +9,6 @@ import nl.stil4m.mollie.Client;
 import nl.stil4m.mollie.ClientBuilder;
 import nl.stil4m.mollie.ResponseOrError;
 import nl.stil4m.mollie.domain.CreatePayment;
-import nl.stil4m.mollie.domain.CreatedPayment;
 import nl.stil4m.mollie.domain.Payment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class MolliePaymentService implements PaymentService {
@@ -30,6 +30,9 @@ public class MolliePaymentService implements PaymentService {
     @Value("${payments.paymentReturnUrl}")
     String returnUrl;
 
+    @Value("${payments.returnUrl}")
+    String webhookUrl;
+
     @Autowired
     public MolliePaymentService(OrderRepository orderRepository, @Value("${payments.molliekey:null}") String apiKey, MailService mailService) {
         this.orderRepository = orderRepository;
@@ -40,7 +43,7 @@ public class MolliePaymentService implements PaymentService {
     public OrderResponse registerOrder(Order order) {
         Map<String, Object> metadata = new HashMap<>();
 
-        String method = "ideal";
+        Optional<String> method = Optional.of("ideal");
 
         if (order.getReturnURL() != null) {
             returnUrl = order.getReturnURL();
@@ -53,12 +56,12 @@ public class MolliePaymentService implements PaymentService {
         amount += 0.29;
 
         CreatePayment payment = new CreatePayment(method, amount, "W.I.S.V. 'Christiaan Huygens' Payments",
-                returnUrl + "?reference=" + order.getPublicReference(), metadata);
+                returnUrl + "?reference=" + order.getPublicReference(), Optional.of(webhookUrl), metadata);
 
         //First try is for IOExceptions coming from the Mollie Client.
         try {
             // Create the payment over at Mollie
-            ResponseOrError<CreatedPayment> molliePayment = mollie.payments().create(payment);
+            ResponseOrError<Payment> molliePayment = mollie.payments().create(payment);
 
             if (molliePayment.getSuccess()) {
                 // All good, update the order
@@ -75,14 +78,13 @@ public class MolliePaymentService implements PaymentService {
         }
     }
 
-    private void updateOrder(Order order, ResponseOrError<CreatedPayment> molliePayment) {
+    private void updateOrder(Order order, ResponseOrError<Payment> molliePayment) {
         // Insert the Mollie ID for future providerReference
         order.setProviderReference(molliePayment.getData().getId());
-        order.setPaymentURL(molliePayment.getData().getLinks().getPaymentUrl());
         order.setStatus(OrderStatus.WAITING);
 
         // Save the changes to the order
-        orderRepository.save(order);
+        orderRepository.saveAndFlush(order);
     }
 
     @Override
@@ -113,8 +115,10 @@ public class MolliePaymentService implements PaymentService {
                         break;
                     }
                     case "paid": {
+                        if(!order.getStatus().equals(OrderStatus.PAID)){
+                            mailService.sendOrderConfirmation(order);
+                        }
                         order.setStatus(OrderStatus.PAID);
-                        mailService.sendOrderConfirmation(order);
                         break;
                     }
                     case "paidout": {

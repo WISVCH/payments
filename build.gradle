@@ -67,7 +67,7 @@ dependencies {
     compile("org.thymeleaf:thymeleaf:3.0.3.RELEASE")
     compile("org.thymeleaf.extras:thymeleaf-extras-springsecurity4:3.0.0.RELEASE")
 
-    compile("nl.stil4m:mollie-api:2.1.0")
+    compile("nl.stil4m:mollie-api:2.6.0")
     compile("ch.wisv:wisvch-connect-client:1.2.6.0") {
         // Workaround for https://github.com/mitreid-connect/OpenID-Connect-Java-Spring-Server/pull/1084
         exclude module: 'bcprov-jdk15on'
