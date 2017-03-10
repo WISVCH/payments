@@ -27,10 +27,10 @@ public class MolliePaymentService implements PaymentService {
 
     private Client mollie;
 
-    @Value("${payments.paymentReturnUrl}")
+    @Value("${payments.returnUrl}")
     String returnUrl;
 
-    @Value("${payments.returnUrl}")
+    @Value("${payments.webhookUrl}")
     String webhookUrl;
 
     @Autowired
