@@ -53,7 +53,7 @@ public class MolliePaymentService implements PaymentService {
                 .mapToDouble(Product::getPrice)
                 .sum();
 
-        amount += 0.29;
+        amount += 0.35;
 
         CreatePayment payment = new CreatePayment(method, amount, "W.I.S.V. 'Christiaan Huygens' Payments",
                 returnUrl + "?reference=" + order.getPublicReference(), Optional.of(webhookUrl), metadata);
