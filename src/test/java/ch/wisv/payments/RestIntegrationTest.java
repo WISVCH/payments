@@ -8,7 +8,6 @@ import ch.wisv.payments.rest.MailServiceImpl;
 import ch.wisv.payments.rest.MolliePaymentService;
 import ch.wisv.payments.rest.repository.ProductGroupRepository;
 import ch.wisv.payments.rest.repository.ProductRepository;
-import io.restassured.RestAssured;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -21,9 +20,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.Year;
-
-import static io.restassured.RestAssured.config;
-import static io.restassured.config.RedirectConfig.redirectConfig;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -54,14 +50,11 @@ public abstract class RestIntegrationTest {
 
     @Before
     public void initRestIntegrationTest() {
-        RestAssured.port = port;
-        config = config().redirect(redirectConfig().followRedirects(false));
-        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
     }
 
     @After
     public void tearDownRestIntegrationTest() {
-        RestAssured.reset();
+
     }
 
     protected Committee getOrPersistCommittee(CommitteeEnum committeeEnum) {

@@ -28,11 +28,20 @@ endpoints.cors.allowed-methods=*
 endpoints.cors.allowed-headers=*
 endpoints.cors.max-age=3600
 security.basic.enabled=false
-payments.paymentReturnUrl=http://ch.tudelft.nl
-payments.molliekey=[CHANGE ME]
-payments.returnUrl="http://localhost:9000"
-connect.issuerUri=https://connect.ch.tudelft.nl/
-connect.clientUri=http://localhost:9000/
-payments.admin.groups=chbeheer,bestuur,hoothub
-# Serve connect
 server.port=9000
+
+#This is the URL Mollie calls when an order gets an update.
+# https://www.mollie.com/nl/docs/webhook
+payments.webhookUrl=http://localhost:9000
+
+# The return Url is the URL to which the user is redirected after the payment.
+# Can (and should) be overriden when creating a new order. This acts as a default fallback.
+payments.returnUrl=http://ch.tudelft.nl
+
+payments.molliekey=[CHANGE ME]
+# connect.issuerUri=https://connect.ch.tudelft.nl/
+# connect.clientUri=http://localhost:9000/
+payments.admin.groups=chbeheer,bestuur,hoothub
+
+payments.admin.username=admin
+payments.admin.password=password
