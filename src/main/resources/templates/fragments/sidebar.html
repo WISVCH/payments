@@ -29,7 +29,7 @@
         <div th:fragment="sidebar">
             <div class="col-sm-3 col-md-2 sidebar">
                 <ul class="nav nav-sidebar">
-                    <li th:classappend="${#httpServletRequest.getRequestURI() == '/admin' ? 'active':''}"><a th:href="@{/admin}">Overview
+                    <li th:classappend="${#httpServletRequest.getRequestURI() == '/dashboard' ? 'active':''}"><a th:href="@{/dashboard}">Overview
                         <span class="sr-only">(current)</span></a></li>
                     <li th:classappend="${#httpServletRequest.getRequestURI() == '/committees' ? 'active':''}"><a
                             th:href="@{/committees}">Committees</a></li>
