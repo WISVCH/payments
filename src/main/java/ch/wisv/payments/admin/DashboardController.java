@@ -19,10 +19,15 @@ public class DashboardController {
         this.orderService = orderService;
     }
 
-    @RequestMapping("/")
-    String index(Model model) {
+    @RequestMapping("/dashboard")
+    String dashboard(Model model) {
         model.addAttribute("orders", orderService.getAllOrders().stream().limit(10).collect(Collectors.toList()));
-        return "index";
+        return "dashboard";
+    }
+
+    @GetMapping("/")
+    String about(){
+        return "about";
     }
 
     @GetMapping("/login")
