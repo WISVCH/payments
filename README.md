@@ -54,7 +54,7 @@ To run a docker container with payments issue the following commands:
 docker build -t payments
 docker run -e "SPRING_PROFILES_ACTIVE=production"
   -e "SPRING_MAIL_HOST=localhost" -e "SPRING_MAIL_PORT=1025"
-  -e "PAYMENTS_MAIL_SENDER=sender@mail.com" -e "SPRING_DATASOURCE_URL=jdbc:hsqldb:mem:payments"
+  -e "PAYMENTS_MAIL_SENDER=${MAIL_SENDER}" -e "SPRING_DATASOURCE_URL=jdbc:hsqldb:mem:payments"
   -e "SPRING_DATASOURCE_USERNAME=sa" -e "SPRING_DATASOURCE_PASSWORD="
   -e "PAYMENTS_MOLLIEKEY=${FILL_MOLLIEKEY_HERE}"
   -e "PAYMENTS_ADMIN_GROUPS=chbeheer,bestuur,hoothub,${SOME_GROUP_YOU_ARE_IN}"
@@ -66,7 +66,7 @@ To run the container in a production environment, use the following configuratio
 ```bash
 docker run -e "SPRING_PROFILES_ACTIVE=production"
  -e "SPRING_MAIL_HOST=localhost" -e "SPRING_MAIL_PORT=1025"
- -e "PAYMENTS_MAIL_SENDER=sender@mail.com" -e "SPRING_DATASOURCE_URL=jdbc:postgresql://${DATABASE_LOCATION}"
+ -e "PAYMENTS_MAIL_SENDER=${MAIL_SENDER}" -e "SPRING_DATASOURCE_URL=jdbc:postgresql://${DATABASE_LOCATION}"
  -e "SPRING_DATASOURCE_USERNAME=${DATABASE_USERNAME}" -e "SPRING_DATASOURCE_PASSWORD=${DATABASE_PASSWORD}"
  -e "PAYMENTS_MOLLIEKEY=${MOLLIE_KEY}" -e "PAYMENTS_ADMIN_GROUPS=chbeheer,bestuur,hoothub,${GROUP_YOU_ARE_IN}"
  -e "PAYMENTS_ADMIN_USERNAME=${ADMINISTRATOR_USERNAME}" -e "PAYMENTS_ADMIN_PASSWORD=${ADMINISTRATOR_PASSWORD}"
