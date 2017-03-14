@@ -173,16 +173,20 @@
                                required>
                     </div>
                     <div class="form-group">
+                        <label for="productLimit">Limit</label>
+                        <div class="input-group col-xs-4">
+                            <input type="number" step="1" th:field="*{groupLimit}" class="form-control"
+                                   id="groupLimit"
+                                   placeholder="Limit" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="sr-only" for="productGroupDescription"></label>
                         <input type="text" class="form-control" th:field="*{description}"
                                id="productGroupDescription"
                                placeholder="Description" required>
                     </div>
                     <button type="submit" class="btn btn-default">Add product group</button>
-                    <button type="button" class="btn btn-primary pull-right" data-toggle="modal"
-                            data-target="#productGroupModal">
-                        Advanced add
-                    </button>
                 </form>
             </div>
         </div>
@@ -193,6 +197,7 @@
                     <th>ID</th>
                     <th>Committee</th>
                     <th>Name</th>
+                    <th>Limit</th>
                     <th>Description</th>
                     <th>Products</th>
                     <th>Actions</th>
@@ -204,6 +209,7 @@
                     <td th:text="${group.getCommittee().getName().getName()} + ' '+ ${group.getCommittee().getYear()}">
                         Row 1 Data 2
                     </td>
+                    <td th:text="${group.getGroupLimit()}">Group limit</td>
                     <td th:text="${group.getName()}">Row 1 Data 1</td>
                     <td th:text="${group.getDescription()}">Row 1 Data 3</td>
                     <td>
@@ -212,14 +218,14 @@
                         </ul>
                     </td>
                     <td>
-                        <div class="btn-group" role="group" aria-label="...">
-                            <button type="button" class="btn btn-info" aria-label="Edit">
-                                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                            </button>
-                            <button type="button" class="btn btn-danger" aria-label="Remove">
-                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                            </button>
-                        </div>
+                        <!--<div class="btn-group" role="group" aria-label="...">-->
+                            <!--<button type="button" class="btn btn-info" aria-label="Edit">-->
+                                <!--<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>-->
+                            <!--</button>-->
+                            <!--<button type="button" class="btn btn-danger" aria-label="Remove">-->
+                                <!--<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>-->
+                            <!--</button>-->
+                        <!--</div>-->
                     </td>
                 </tr>
                 </tbody>

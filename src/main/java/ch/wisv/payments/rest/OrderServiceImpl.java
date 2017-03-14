@@ -91,12 +91,14 @@ public class OrderServiceImpl implements OrderService {
                 }
                 // Check if the limit per group isn't exceeded
                 productGroup.ifPresent(group -> {
-                    Long productGroupCount = group.getProducts().stream()
-                            .map(this::getProductsSold)
-                            // Count the number sold of all products in this group
-                            .reduce(0L, (totalCount, productCount) -> totalCount + productCount);
-                    if (productGroupCount > group.getGroupLimit()) {
-                        throw new ProductLimitExceededException("Can't order more tickets of " + product.getName());
+                    if (group.getGroupLimit() != 0) {
+                        Long productGroupCount = group.getProducts().stream()
+                                .map(this::getProductsSold)
+                                // Count the number sold of all products in this group
+                                .reduce(0L, (totalCount, productCount) -> totalCount + productCount);
+                        if (productGroupCount > group.getGroupLimit()) {
+                            throw new ProductLimitExceededException("Can't order more tickets of " + product.getName());
+                        }
                     }
                 });
             } else {
