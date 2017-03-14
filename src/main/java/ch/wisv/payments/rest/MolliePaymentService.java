@@ -82,6 +82,7 @@ public class MolliePaymentService implements PaymentService {
         // Insert the Mollie ID for future providerReference
         order.setProviderReference(molliePayment.getData().getId());
         order.setStatus(OrderStatus.WAITING);
+        order.setPaymentURL(molliePayment.getData().getLinks().getPaymentUrl());
 
         // Save the changes to the order
         orderRepository.saveAndFlush(order);
