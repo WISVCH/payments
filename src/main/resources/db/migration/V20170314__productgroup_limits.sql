@@ -1,0 +1,1 @@
+ALTER TABLE product_group ADD group_limit int NOT NULL;
