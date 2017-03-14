@@ -11,10 +11,10 @@
     <title>Dashboard Template for Bootstrap</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="webjars/bootstrap/3.3.7-1/css/bootstrap.min.css" rel="stylesheet">
+    <link th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="../dashboard.css" rel="stylesheet">
+    <link th:href="@{/css/dashboard.css}" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -29,13 +29,14 @@
         <div th:fragment="sidebar">
             <div class="col-sm-3 col-md-2 sidebar">
                 <ul class="nav nav-sidebar">
-                    <li th:classappend="${#httpServletRequest.getRequestURI() == '/dashboard' ? 'active':''}"><a th:href="@{/dashboard}">Overview
+                    <li th:classappend="${#httpServletRequest.getRequestURI().contains('/dashboard') ? 'active':''}">
+                        <a th:href="@{/dashboard}">Overview
                         <span class="sr-only">(current)</span></a></li>
-                    <li th:classappend="${#httpServletRequest.getRequestURI() == '/committees' ? 'active':''}"><a
+                    <li th:classappend="${#httpServletRequest.getRequestURI().contains('/committees') ? 'active':''}"><a
                             th:href="@{/committees}">Committees</a></li>
                     <li th:classappend="${#httpServletRequest.getRequestURI().contains('/products') ? 'active':''}"><a
                             th:href="@{/products}" href="#">Products</a></li>
-                    <li th:classappend="${#httpServletRequest.getRequestURI() == '/orders' ? 'active':''}"><a
+                    <li th:classappend="${#httpServletRequest.getRequestURI().contains('/orders') ? 'active':''}"><a
                             th:href="@{/orders}">Orders</a></li>
                 </ul>
             </div>
