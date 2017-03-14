@@ -49,7 +49,7 @@ public class OrderServiceImpl implements OrderService {
         }
 
         // Throw exceptions if product limits are exceeded
-        validateProductLimits(products);
+        validateProductLimits(products, request.getProductKeys().size());
 
         Order order = new Order(products, request.getName(), request.getEmail());
 
@@ -68,7 +68,7 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.save(order);
     }
 
-    private void validateProductLimits(List<Product> products) {
+    private void validateProductLimits(List<Product> products, int orderSize) {
         Map<Product, Integer> orderMap = new HashMap<>();
 
         for (Product product : products) {
@@ -95,7 +95,7 @@ public class OrderServiceImpl implements OrderService {
                         Long productGroupCount = group.getProducts().stream()
                                 .map(this::getProductsSold)
                                 // Count the number sold of all products in this group
-                                .reduce(0L, (totalCount, productCount) -> totalCount + productCount);
+                                .reduce((long) orderSize, (totalCount, productCount) -> totalCount + productCount);
                         if (productGroupCount > group.getGroupLimit()) {
                             throw new ProductLimitExceededException("Can't order more tickets of " + product.getName());
                         }
