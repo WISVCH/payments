@@ -25,5 +25,10 @@ public class ProductGroupRequest {
     @Getter
     @Setter
     @NotNull
+    private Integer groupLimit;
+
+    @Getter
+    @Setter
+    @NotNull
     private Integer committeeId;
 }

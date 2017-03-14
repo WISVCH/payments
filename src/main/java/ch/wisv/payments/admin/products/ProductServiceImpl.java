@@ -58,7 +58,7 @@ public class ProductServiceImpl implements ProductService {
     public void addProductGroup(ProductGroupRequest productGroupRequest) {
         Committee committee = committeeRepository.findOne(productGroupRequest.getCommitteeId());
         ProductGroup group = new ProductGroup(productGroupRequest.getName(),
-                productGroupRequest.getDescription(), committee);
+                productGroupRequest.getDescription(), productGroupRequest.getGroupLimit(), committee);
 
         productGroupRepository.save(group);
     }

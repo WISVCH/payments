@@ -7,8 +7,8 @@ import ch.wisv.payments.rest.repository.OrderRepository;
 import ch.wisv.payments.rest.repository.ProductGroupRepository;
 import ch.wisv.payments.rest.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -43,10 +43,10 @@ public class TestDataRunner implements CommandLineRunner {
         Committee committee5 = committeeRepository.save(new Committee(CommitteeEnum.SYMPOSIUM, 2016));
 
         ProductGroup sympoGroup = productGroupRepository.save(
-                new ProductGroup("Symposium 2016", "Group for all CH Symposium tickets", committee5));
+                new ProductGroup("Symposium 2016", "Group for all CH Symposium tickets", 200, committee5));
 
         ProductGroup akcieGroup = productGroupRepository.save(
-                new ProductGroup("AkCie 2016", "Group for all AkCie activities", committee2));
+                new ProductGroup("AkCie 2016", "Group for all AkCie activities", 0, committee2));
 
         Product sympoStudent = productRepository.save(
                 new Product(committee5, "Student Ticket", "Ticket for students", 10.00F, 0, 0));
