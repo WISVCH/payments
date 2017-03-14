@@ -2,11 +2,9 @@ package ch.wisv.payments.rest;
 
 import ch.wisv.payments.exception.EmptyOrderException;
 import ch.wisv.payments.exception.ProductLimitExceededException;
-import ch.wisv.payments.model.Order;
-import ch.wisv.payments.model.OrderRequest;
-import ch.wisv.payments.model.OrderStatus;
-import ch.wisv.payments.model.Product;
+import ch.wisv.payments.model.*;
 import ch.wisv.payments.rest.repository.OrderRepository;
+import ch.wisv.payments.rest.repository.ProductGroupRepository;
 import ch.wisv.payments.rest.repository.ProductRepository;
 import lombok.Synchronized;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +21,16 @@ public class OrderServiceImpl implements OrderService {
 
     private ProductRepository productRepository;
     private OrderRepository orderRepository;
+    private ProductGroupRepository productGroupRepository;
 
     private String defaultReturnUrl;
 
     @Autowired
     public OrderServiceImpl(ProductRepository productRepository,
-                            OrderRepository orderRepository) {
+                            OrderRepository orderRepository, ProductGroupRepository productGroupRepository) {
         this.productRepository = productRepository;
         this.orderRepository = orderRepository;
+        this.productGroupRepository = productGroupRepository;
 
         //TODO move to properties
         this.defaultReturnUrl = "https://ch.tudelft.nl/payments/complete";
@@ -72,6 +72,8 @@ public class OrderServiceImpl implements OrderService {
         Map<Product, Integer> orderMap = new HashMap<>();
 
         for (Product product : products) {
+            Optional<ProductGroup> productGroup = productGroupRepository.findOneByProductsKey(product.getKey());
+
             if (orderMap.containsKey(product)) {
                 Integer i = orderMap.get(product);
                 orderMap.put(product, i + 1);
@@ -79,22 +81,38 @@ public class OrderServiceImpl implements OrderService {
                 orderMap.put(product, 1);
             }
 
-            List<Order> ordersWithProduct = orderRepository.findAllByProductsId(product.getId());
+            long productsSold = getProductsSold(product);
 
-            long productsSold = ordersWithProduct.stream().
-                    filter(o -> o.getStatus().equals(OrderStatus.WAITING) || o.getStatus().equals(OrderStatus.PAID)).
-                    flatMap(order -> order.getProducts().stream()).
-                    filter(p -> p.getId() == product.getId()).
-                    count();
-
+            // Check if the available number of products isn't exceeded
             if (product.getAvailableProducts() >= productsSold + orderMap.get(product) || product.getAvailableProducts() == 0) {
+                // Check if the limit per order is exceeded
                 if (product.getLimitPerOrder() < orderMap.get(product) && product.getLimitPerOrder() != 0) {
                     throw new ProductLimitExceededException("Product limit of " + product.getName() + " per order exceeded");
                 }
+                // Check if the limit per group isn't exceeded
+                productGroup.ifPresent(group -> {
+                    Long productGroupCount = group.getProducts().stream()
+                            .map(this::getProductsSold)
+                            // Count the number sold of all products in this group
+                            .reduce(0L, (totalCount, productCount) -> totalCount + productCount);
+                    if (productGroupCount > group.getGroupLimit()) {
+                        throw new ProductLimitExceededException("Can't order more tickets of " + product.getName());
+                    }
+                });
             } else {
                 throw new ProductLimitExceededException("Can't order more tickets of " + product.getName());
             }
         }
+    }
+
+    private Long getProductsSold(Product product) {
+        List<Order> ordersWithProduct = orderRepository.findAllByProductsId(product.getId());
+
+        return ordersWithProduct.stream().
+                filter(o -> o.getStatus().equals(OrderStatus.WAITING) || o.getStatus().equals(OrderStatus.PAID)).
+                flatMap(order -> order.getProducts().stream()).
+                filter(p -> p.getId() == product.getId()).
+                count();
     }
 
     @Override

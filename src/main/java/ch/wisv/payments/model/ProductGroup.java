@@ -34,6 +34,10 @@ public class ProductGroup {
 
     @Getter
     @Setter
+    private int groupLimit;
+
+    @Getter
+    @Setter
     private String returnUrl;
 
     @Getter
@@ -41,10 +45,11 @@ public class ProductGroup {
     @ManyToOne
     private Committee committee;
 
-    public ProductGroup(String name, String description, Committee committee) {
+    public ProductGroup(String name, String description, int groupLimit, Committee committee) {
         this.name = name;
         this.description = description;
         this.committee = committee;
+        this.groupLimit = groupLimit;
         this.products = new HashSet<>();
     }
 }
