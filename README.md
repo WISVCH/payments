@@ -20,8 +20,8 @@ url = "http://localhost:9000/api/orders"
 
 payload = {
         'name': 'Thomas Ticket',
-        'email': 'thomasticket@mail.com',
-        'returnUrl': 'https://www.ch.tuldeft.nl/payments/ordercompleted',
+        'email': 'thomasticket@example.com',
+        'returnUrl': 'https://www.ch.tudelft.nl/payments/ordercompleted',
         'productKeys': ['e44685c5-a360-467c-960d-29843a101bb1', '879941f4-43d1-4ff2-ad66-cbdf3b141cab']
     }
 
