@@ -45,3 +45,5 @@ payments.admin.groups=chbeheer,bestuur,hoothub
 
 payments.admin.username=admin
 payments.admin.password=password
+
+server.context-path=/payments/
