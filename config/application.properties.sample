@@ -1,6 +1,6 @@
 spring.mail.host=localhost
 spring.mail.port=1025
-payments.mail.sender=
+payments.mail.sender=sender@mail.com
 
 #Thymeleaf
 spring.thymeleaf.check-template-location=true
