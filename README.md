@@ -1,16 +1,16 @@
 # CH-Payments
 Welcome to CH Payments, a simple paymentprovider wrapper for stuff you want CH to get money for.
 Payments makes it easy to create products, and implement it in your own website.
-No hassle with keys, accounts and webhooks, just a single call to initiate a payment. 
+No hassle with keys, accounts and webhooks, just a single call to initiate a payment.
 
 Below you can find some ready-to-use code examples for your website.
 
-The administration panel (for now) is only available for board members. 
+The administration panel (for now) is only available for board members.
 They can create products to generate the keys required.
 
 # Code examples
-No idea how to code, but still want to sell tickets on your CH site? 
-Use one of these code examples to get going. 
+No idea how to code, but still want to sell tickets on your CH site?
+Use one of these code examples to get going.
 
 #### Python 3.5
 ```python
@@ -31,23 +31,42 @@ print(response.json())
 ```
 
 #### JavaScript
-[Code example required](https://github.com/WISVCH/payments/issues/6)
+
+Creating an order:
+```js
+fetch('http://localhost:9000/api/orders', {
+  method: 'POST',
+  body: {
+    name: 'Thomas Ticket',
+    email: 'thomasticket@example.com',
+    returnUrl: 'https://www.ch.tudelft.nl/payments/ordercompleted',
+    productKeys: ['e44685c5-a360-467c-960d-29843a101bb1', '879941f4-43d1-4ff2-ad66-cbdf3b141cab']
+  }
+});
+```
+
+Obtaining the status:
+```js
+const request = await fetch('http://localhost:9000/api/orders/status/e44685c5-a360-467c-960d-29843a101bb1');
+const response = await request.json();
+console.log(response);
+```
 
 #### PHP
 [Code example required](https://github.com/WISVCH/payments/issues/6)
 
 # HootHub
 This project currently is quite minimal, and offers lots of opportunities for great features built by you!
-Check out the issue page for HootHub issues, and start earning Uilenballen. 
+Check out the issue page for HootHub issues, and start earning Uilenballen.
 
 First, pick an issue and self-assign it. Make your changes in a new branch, with the following naming convention:
 
 - Fixing a bug? > "fix-description_of_bug"
 - Implementing a new feature? > "feature-description_of_feature"
 
-Once you're satisfied with your changes, create a pull request and give it the label "Ready for review". 
-You can assign someone in specific or wait for someone to pick it up. 
-Make sure to include tests and documentation. 
+Once you're satisfied with your changes, create a pull request and give it the label "Ready for review".
+You can assign someone in specific or wait for someone to pick it up.
+Make sure to include tests and documentation.
 If Travis isn't happy, we're not happy.
 
 # Running
