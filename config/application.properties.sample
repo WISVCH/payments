@@ -15,6 +15,7 @@ spring.datasource.driverClassName=org.hsqldb.jdbc.JDBCDriver
 spring.datasource.url=jdbc:hsqldb:mem:payments
 spring.datasource.username=sa
 spring.datasource.password=
+flyway.enabled=false
 spring.data.jpa.repositories.enabled=true
 spring.jpa.show-sql=false
 spring.jpa.database-platform=org.hibernate.dialect.HSQLDialect
@@ -32,7 +33,7 @@ server.port=9000
 
 #This is the URL Mollie calls when an order gets an update.
 # https://www.mollie.com/nl/docs/webhook
-payments.webhookUrl=http://localhost:9000
+payments.webhookUrl=https://ch.tudelft.nl
 
 # The return Url is the URL to which the user is redirected after the payment.
 # Can (and should) be overriden when creating a new order. This acts as a default fallback.
