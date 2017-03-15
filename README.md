@@ -32,25 +32,36 @@ print(response.json())
 
 #### JavaScript
 
-Creating an order:
+The full workflow is as follows.
+
 ```js
-fetch('http://localhost:9000/api/orders', {
-  method: 'POST',
-  body: {
-    name: 'Thomas Ticket',
-    email: 'thomasticket@example.com',
-    returnUrl: 'https://www.ch.tudelft.nl/payments/ordercompleted',
-    productKeys: ['e44685c5-a360-467c-960d-29843a101bb1', '879941f4-43d1-4ff2-ad66-cbdf3b141cab']
-  }
-});
+async function main() {
+  const productsRequest = await fetch('http://localhost:9000/api/products/SYMPOSIUM/2016');
+  const products = await productsRequest.json();
+
+  const orderRequest = await fetch('http://localhost:9000/api/orders', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({
+      name: 'Thomas Ticket',
+      email: 'thomasticket@example.com',
+      returnUrl: 'https://www.ch.tudelft.nl/payments/ordercompleted',
+      productKeys: products.map(p => p.key)
+    })
+  });
+  const order = await orderRequest.json();
+  console.log(`You should redirect the user to url ${order.url}`);
+
+  // After that you can obtain the order status with:
+  const statusRequest = await fetch(`http://localhost:9000/api/orders/${order.publicReference}`);
+  const status = await statusRequest.json();
+  console.log(`The order status is right now ${status.status}`);
+}
+
+main();
 ```
 
-Obtaining the status:
-```js
-const request = await fetch('http://localhost:9000/api/orders/status/e44685c5-a360-467c-960d-29843a101bb1');
-const response = await request.json();
-console.log(response);
-```
+(You can copy-paste this snippet into the Dev console of your browser to try it out. It requires Chrome 55+.
 
 #### PHP
 [Code example required](https://github.com/WISVCH/payments/issues/6)
