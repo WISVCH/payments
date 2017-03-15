@@ -90,7 +90,7 @@ public class MolliePaymentService implements PaymentService {
 
     @Override
     public Order updateStatusByPublicReference(String publicOrderReference) {
-        Order order = orderRepository.findByProviderReference(publicOrderReference)
+        Order order = orderRepository.findByPublicReference(publicOrderReference)
                 .orElseThrow(() -> new RuntimeException("Order with publicReference " + publicOrderReference + " not found"));
         return updateOrder(order);
     }
