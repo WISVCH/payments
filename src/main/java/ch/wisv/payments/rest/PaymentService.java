@@ -11,6 +11,8 @@ public interface PaymentService {
 
     OrderResponse registerOrder(Order order);
 
-    Order updateStatus(String orderReference);
+    Order updateStatusByPublicReference(String publicOrderReference);
+
+    Order updateStatusByProviderReference(String providerOrderReference);
 
 }

@@ -35,7 +35,7 @@ public class OrderController {
     @PostMapping("/update/{orderReference}")
     String updateOrder(Model model, @PathVariable String orderReference, RedirectAttributes redirectAttributes) {
         try {
-            Order order = paymentService.updateStatus(orderReference);
+            Order order = paymentService.updateStatusByPublicReference(orderReference);
             redirectAttributes.addFlashAttribute("message", "Order " + order.getId() + " successfully updated!");
         } catch (RuntimeException e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());

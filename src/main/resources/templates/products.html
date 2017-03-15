@@ -209,8 +209,8 @@
                     <td th:text="${group.getCommittee().getName().getName()} + ' '+ ${group.getCommittee().getYear()}">
                         Row 1 Data 2
                     </td>
-                    <td th:text="${group.getGroupLimit()}">Group limit</td>
                     <td th:text="${group.getName()}">Row 1 Data 1</td>
+                    <td th:text="${group.getGroupLimit()}">Group limit</td>
                     <td th:text="${group.getDescription()}">Row 1 Data 3</td>
                     <td>
                         <ul th:each="product : ${group.getProducts()}">
