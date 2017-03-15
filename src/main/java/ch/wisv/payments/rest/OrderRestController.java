@@ -40,9 +40,15 @@ public class OrderRestController {
         return new ResponseEntity<>(new OrderResponse(order), HttpStatus.OK);
     }
 
+    /**
+     * This endpoint is for the paymentprovider. Webhooks will arrive here.
+     *
+     * @param providerReference The provider Order Reference
+     * @return Status Message
+     */
     @RequestMapping(value = "/status", method = RequestMethod.POST)
-    public ResponseEntity<?> updateOrderStatus(@RequestParam(name = "id") String orderReference) {
-        paymentService.updateStatus(orderReference);
+    public ResponseEntity<?> updateOrderStatus(@RequestParam(name = "id") String providerReference) {
+        paymentService.updateStatusByProviderReference(providerReference);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

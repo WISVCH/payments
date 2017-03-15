@@ -89,10 +89,20 @@ public class MolliePaymentService implements PaymentService {
     }
 
     @Override
-    public Order updateStatus(String orderReference) {
-        Order order = orderRepository.findByProviderReference(orderReference)
-                .orElseThrow(() -> new RuntimeException("Order with providerReference " + orderReference + " not found"));
+    public Order updateStatusByPublicReference(String publicOrderReference) {
+        Order order = orderRepository.findByProviderReference(publicOrderReference)
+                .orElseThrow(() -> new RuntimeException("Order with publicReference " + publicOrderReference + " not found"));
+        return updateOrder(order);
+    }
 
+    @Override
+    public Order updateStatusByProviderReference(String providerOrderReference) {
+        Order order = orderRepository.findByProviderReference(providerOrderReference)
+                .orElseThrow(() -> new RuntimeException("Order with providerReference " + providerOrderReference + " not found"));
+        return updateOrder(order);
+    }
+
+    private Order updateOrder(Order order) {
         // This try is for the Mollie API internal HttpClient
         try {
             // Request a payment from Mollie
