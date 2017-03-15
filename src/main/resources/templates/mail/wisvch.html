@@ -32,8 +32,8 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td style=" padding: 10px 0;">
-                                    <p th:text="${order.getPublicReference()}">Order reference: #reference</p>
+                                <td style="padding: 10px 0;">
+                                    <p th:text="${'Order reference: '+ order.getPublicReference()}">Order reference: #reference</p>
                                     <p>This is your order confirmation. We have received your payment in good order.</p>
                                 </td>
                             </tr>
@@ -50,7 +50,11 @@
                                             </th>
                                             <th align="left" valign="top"
                                                 style="border-bottom: 2px solid #ccc; padding: 8px;">
-                                                <span>Name</span>
+                                                <span>Description</span>
+                                            </th>
+                                            <th align="left" valign="top"
+                                                style="border-bottom: 2px solid #ccc; padding: 8px;">
+                                                <span>Event</span>
                                             </th>
                                             <th align="left" valign="top"
                                                 style="border-bottom: 2px solid #ccc; padding: 8px;">
@@ -61,8 +65,9 @@
                                         <tbody class="tickets">
                                         <tr th:each="product : ${order.getProducts()}">
                                             <td th:text="${product.getName()}">Product Name</td>
-                                            <td th:text="${order.getName()}">User Name</td>
-                                            <td th:text="${product.getPrice()}">Product price</td>
+                                            <td th:text="${product.getDescription()}">Product description</td>
+                                            <td th:text="${product.getProductGroup().getName()}">Product group</td>
+                                            <td th:text="${'&euro;'+ #numbers.formatDecimal(product.getPrice(), 0, 'COMMA', 2, 'POINT')}">Product price</td>
                                         </tr>
                                         </tbody>
                                     </table>
