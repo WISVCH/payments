@@ -90,7 +90,7 @@ public class MolliePaymentService implements PaymentService {
 
     @Override
     public Order updateStatus(String orderReference) {
-        Order order = orderRepository.findByPublicReference(orderReference)
+        Order order = orderRepository.findByProviderReference(orderReference)
                 .orElseThrow(() -> new RuntimeException("Order with providerReference " + orderReference + " not found"));
 
         // This try is for the Mollie API internal HttpClient
@@ -116,7 +116,7 @@ public class MolliePaymentService implements PaymentService {
                         break;
                     }
                     case "paid": {
-                        if(!order.getStatus().equals(OrderStatus.PAID)){
+                        if (!order.getStatus().equals(OrderStatus.PAID)) {
                             mailService.sendOrderConfirmation(order);
                         }
                         order.setStatus(OrderStatus.PAID);
