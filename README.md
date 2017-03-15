@@ -8,13 +8,35 @@ Below you can find some ready-to-use code examples for your website.
 The administration panel (for now) is only available for board members. 
 They can create products to generate the keys required.
 
-#Code examples
+# Code examples
 No idea how to code, but still want to sell tickets on your CH site? 
 Use one of these code examples to get going. 
 
-//Insert code templates here #6
+#### Python 3.5
+```python
+import requests
 
-#HootHub
+url = "http://localhost:9000/api/orders"
+
+payload = {
+        'name': 'Thomas Ticket',
+        'email': 'thomasticket@example.com',
+        'returnUrl': 'https://www.ch.tudelft.nl/payments/ordercompleted',
+        'productKeys': ['e44685c5-a360-467c-960d-29843a101bb1', '879941f4-43d1-4ff2-ad66-cbdf3b141cab']
+    }
+
+response = requests.post(url, json=payload)
+
+print(response.json())
+```
+
+#### JavaScript
+[Code example required](https://github.com/WISVCH/payments/issues/6)
+
+#### PHP
+[Code example required](https://github.com/WISVCH/payments/issues/6)
+
+# HootHub
 This project currently is quite minimal, and offers lots of opportunities for great features built by you!
 Check out the issue page for HootHub issues, and start earning Uilenballen. 
 
@@ -28,7 +50,7 @@ You can assign someone in specific or wait for someone to pick it up.
 Make sure to include tests and documentation. 
 If Travis isn't happy, we're not happy.
 
-#Running
+# Running
 ## From IntelliJ
 1.  Import the project into IntelliJ IDEA, we really recommend using [IntelliJ IDEA Ultimate Edition](https://www.jetbrains.com/idea/), since it includes all the support for Spring. You could use another IDE, but we do not recommend this
 2.  Make sure you have installed the `Lombok Plugin`
