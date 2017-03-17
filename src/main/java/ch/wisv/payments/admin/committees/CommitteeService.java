@@ -4,7 +4,6 @@ import ch.wisv.payments.model.Committee;
 import ch.wisv.payments.model.CommitteeEnum;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface CommitteeService {
 

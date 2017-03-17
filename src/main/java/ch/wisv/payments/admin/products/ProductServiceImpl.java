@@ -1,19 +1,14 @@
 package ch.wisv.payments.admin.products;
 
-import ch.wisv.payments.admin.committees.CommitteeRepository;
 import ch.wisv.payments.admin.committees.CommitteeService;
-import ch.wisv.payments.admin.committees.CommitteeServiceImpl;
 import ch.wisv.payments.admin.products.request.ProductGroupRequest;
 import ch.wisv.payments.admin.products.request.ProductRequest;
-import ch.wisv.payments.exception.CommitteeNotFoundException;
 import ch.wisv.payments.exception.ProductGroupInUseException;
 import ch.wisv.payments.exception.ProductInUseException;
 import ch.wisv.payments.model.*;
 import ch.wisv.payments.rest.OrderService;
-import ch.wisv.payments.rest.OrderServiceImpl;
 import ch.wisv.payments.rest.repository.ProductGroupRepository;
 import ch.wisv.payments.rest.repository.ProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
