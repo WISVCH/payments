@@ -1,5 +1,6 @@
 package ch.wisv.payments.rest;
 
+import ch.wisv.payments.model.Committee;
 import ch.wisv.payments.model.Order;
 import ch.wisv.payments.model.OrderRequest;
 
@@ -16,4 +17,8 @@ public interface OrderService {
     List<Order> getAllOrders();
 
     List<Order> getOrdersByProductId(int productId);
+
+    List<Order> getOrdersByCommittee(Committee committee);
+
+    Float getTransactionCostByCommittee(Committee committee);
 }

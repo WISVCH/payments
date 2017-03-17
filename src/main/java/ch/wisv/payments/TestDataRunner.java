@@ -52,6 +52,8 @@ public class TestDataRunner implements CommandLineRunner {
                 new Product(committee5, "Student Ticket", "Ticket for students", 10.00F, 0, 0));
         Product sympoBurger = productRepository.save(
                 new Product(committee5, "Regular Ticket", "Ticket for non-students", 20.00F, 0, 0));
+        Product lucie = productRepository.save(
+                new Product(committee1, "lucieticket", "Ticket for non-students", 50.00F, 0, 0));
 
         productService.addProductToGroup(sympoStudent, sympoGroup);
         productService.addProductToGroup(sympoBurger, sympoGroup);
@@ -63,8 +65,8 @@ public class TestDataRunner implements CommandLineRunner {
         Order order3 = orderRepository.save(
                 new Order(Collections.singletonList(sympoBurger), "Charlie Dodson", "charlie@dodson.com"));
         Order order4 = orderRepository.save(
-                new Order(Arrays.asList(sympoBurger, sympoStudent), "Dick Edison", "dick@edison.com"));
-
-
+                new Order(Arrays.asList(sympoBurger, sympoStudent, lucie), "Dick Edison", "dick@edison.com"));
+        Order order5 = orderRepository.save(
+                new Order(Collections.singletonList(lucie), "Eddie F", "dick@edison.com"));
     }
 }

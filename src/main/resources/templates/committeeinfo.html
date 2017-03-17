@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>CH Payments</title>
+
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/webjars/wisvch-bootstrap-theme/0.0.3/dist/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+    <link rel="stylesheet" th:href="@{/webjars/font-awesome/4.7.0/css/font-awesome.min.css}">
+
+    <!-- Custom styles for this template -->
+    <link th:href="@{/css/dashboard.css}" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<div th:replace="fragments/header :: header">
+    <nav class="navbar navbar-inverse navbar-fixed-top"></nav>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div th:replace="fragments/sidebar :: sidebar"></div>
+    </div>
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <h1 class="page-header">Committee Info</h1>
+
+        <div class="row">
+            <p>This page is where you can find all specifics for committees</p>
+
+            <p>Select a committee:</p>
+
+            <form th:action="@{/committeeinfo/}"></form>
+            <div class="form-group">
+                <select class="form-control" id="committeeNameGroup">
+                    <option th:each="committee : ${committees}"
+                            th:value="${committee.id}"
+                            th:text="${committee.getName().getName()} + ' ' +  ${committee.year}">
+                    </option>
+                </select>
+            </div>
+        </div>
+
+
+        <div th:if="${selected}">
+            <div class="row">
+                <div class="col-md-4 col-lg-2">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-2">
+                                    <i class="fa fa-credit-card fa-4x"></i>
+                                </div>
+                                <div class="col-xs-10 text-right">
+                                    <div class="huge" th:text="${orders.size()}"></div>
+                                    <div>Orders created!</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-2">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-2">
+                                    <i class="fa fa-money fa-4x"></i>
+                                </div>
+                                <div class="col-xs-10 text-right">
+                                    <div class="huge"
+                                         th:text="${'&euro;'+ #numbers.formatDecimal(transactionCost, 0, 'COMMA', 2, 'POINT')}"></div>
+                                    <div>Transaction Costs</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <h2 class="sub-header">Latest transactions for <span
+                    th:text="${committee.getName().getName()} + ${' ' + committee.getYear()}">Committee</span></span>
+            </h2>
+            <div class="table-responsive">
+                <table id="ordersTable" class="display table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Committee</th>
+                        <th>Products</th>
+                        <th>Created</th>
+                        <th>Status</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="order : ${orders}">
+                        <td th:text="${order.getProducts().get(0).getCommittee().getName().getName()}"></td>
+                        <td>
+                            <ul th:each="product : ${order.products}">
+                                <li th:text="${product.name}"></li>
+                            </ul>
+                        </td>
+                        <td th:text="${order.creationDate}">Row 1 Data 2</td>
+                        <td th:text="${order.status}">Row 1 Data 1</td>
+                        <td th:text="${order.name}">Row 1 Data 3</td>
+                        <td th:text="${order.email}">Row 1 Data 5</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.12/datatables.min.js"></script>
+<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+<script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+
+    $('select').on('change', function () {
+        window.location.href = [[@{
+            /committeeinfo/
+        }
+        ]]
+        +this.value;
+    })
+
+    $('#ordersTable').DataTable();
+
+    /*]]>*/
+</script>
+</body>
+</html>
