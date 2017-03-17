@@ -47,8 +47,7 @@
                 </div>
                 <div class="panel-body col-lg-12">
                     <!--/*@thymesVar id="product" type="ch.wisv.payments.admin.products.request.ProductRequest"*/-->
-                    <form class="form-horizontal" th:action="@{/products/edit}" th:object="${product}"
-                          method="post">
+                    <form th:action="@{/products/edit}" th:object="${product}" method="post">
                         <input type="hidden" th:field="*{id}">
                         <div class="form-group">
                             <label for="committeeName">Committee</label>
