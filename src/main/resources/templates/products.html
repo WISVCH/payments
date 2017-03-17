@@ -155,7 +155,7 @@
             </div>
             <div class="panel-body">
                 <!--/*@thymesVar id="productGroup" type="ch.wisv.payments.admin.products.request.ProductGroupRequest"*/-->
-                <form class="form-inline" th:action="@{/products/addGroup}" th:object="${productGroup}"
+                <form class="form-inline" th:action="@{/products/group}" th:object="${productGroup}"
                       method="post">
                     <div class="form-group">
                         <label class="sr-only" for="committeeNameGroup">Committee</label>
@@ -226,6 +226,18 @@
                         <!--<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>-->
                         <!--</button>-->
                         <!--</div>-->
+                    </td>
+                    <td>
+                        <form th:action="@{/products/group/delete/} + ${group.id}" method="post">
+                            <div class="btn-group" role="group" aria-label="...">
+                                <!--<a class="btn btn-info" th:href="@{/products/edit/} + ${product.id}" href="#">-->
+                                    <!--<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>-->
+                                <!--</a>-->
+                                <button type="submit" class="btn btn-danger" aria-label="Remove">
+                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                </button>
+                            </div>
+                        </form>
                     </td>
                 </tr>
                 </tbody>

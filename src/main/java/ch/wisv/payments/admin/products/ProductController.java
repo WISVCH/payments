@@ -88,9 +88,17 @@ public class ProductController {
         return "redirect:/products";
     }
 
-    @PostMapping(value = "/addGroup")
+    @PostMapping(value = "/group")
     public String addProductGroup(@ModelAttribute @Validated ProductGroupRequest productGroupRequest) {
         productService.addProductGroup(productGroupRequest);
+        System.out.println("here");
+
+        return "redirect:/products";
+    }
+
+    @PostMapping(value = "/group/delete/{productGroupId}")
+    public String deleteProductGroup(@PathVariable int productGroupId) {
+        productService.deleteProductGroup(productGroupId);
 
         return "redirect:/products";
     }

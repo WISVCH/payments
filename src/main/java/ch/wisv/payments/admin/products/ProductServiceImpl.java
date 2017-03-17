@@ -139,4 +139,11 @@ public class ProductServiceImpl implements ProductService {
             productRepository.delete(productId);
         }
     }
+
+    @Override
+    public void deleteProductGroup(int productGroupId) {
+        productGroupRepository.findOne(productGroupId).getProducts()
+                .forEach(p -> p.setProductGroup(null));
+        productGroupRepository.delete(productGroupId);
+    }
 }
