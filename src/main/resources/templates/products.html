@@ -218,21 +218,11 @@
                         </ul>
                     </td>
                     <td>
-                        <!--<div class="btn-group" role="group" aria-label="...">-->
-                        <!--<button type="button" class="btn btn-info" aria-label="Edit">-->
-                        <!--<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>-->
-                        <!--</button>-->
-                        <!--<button type="button" class="btn btn-danger" aria-label="Remove">-->
-                        <!--<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>-->
-                        <!--</button>-->
-                        <!--</div>-->
-                    </td>
-                    <td>
                         <form th:action="@{/products/group/delete/} + ${group.id}" method="post">
                             <div class="btn-group" role="group" aria-label="...">
-                                <!--<a class="btn btn-info" th:href="@{/products/edit/} + ${product.id}" href="#">-->
-                                    <!--<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>-->
-                                <!--</a>-->
+                                <a class="btn btn-info" th:href="@{/products/group/edit/} + ${group.id}" href="#">
+                                    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                                </a>
                                 <button type="submit" class="btn btn-danger" aria-label="Remove">
                                     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                                 </button>

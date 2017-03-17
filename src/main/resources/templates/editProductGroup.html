@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>CH Payments</title>
+
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/webjars/wisvch-bootstrap-theme/0.0.3/dist/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+
+    <!-- Custom styles for this template -->
+    <link th:href="@{/css/dashboard.css}" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.12/datatables.min.css"/>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<div th:replace="fragments/header :: header">
+    <nav class="navbar navbar-inverse navbar-fixed-top"></nav>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div th:replace="fragments/sidebar :: sidebar"></div>
+    </div>
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <h1 class="page-header">Products</h1>
+
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Edit</h3>
+                </div>
+                <div class="panel-body col-lg-12">
+                    <!--/*@thymesVar id="productGroup" type="ch.wisv.payments.admin.products.request.ProductGroupRequest"*/-->
+                    <form class="form-horizontal" th:action="@{/products/group/edit}" th:object="${productGroup}"
+                          method="post">
+                        <input type="hidden" th:field="*{id}">
+                        <div class="form-group">
+                            <label for="committeeName">Committee</label>
+                            <select class="form-control" th:field="*{committeeId}" id="committeeName">
+                                <option th:each="committee : ${committees}"
+                                        th:value="${committee.id}"
+                                        th:text="${committee.getName().getName()} + ' ' +  ${committee.year}">
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="productName">Group Name</label>
+                            <input type="text" class="form-control" th:field="*{name}" id="productName"
+                                   placeholder="Name"
+                                   required>
+                        </div>
+                        <div class="form-group">
+                            <label for="productDescription">Description</label>
+                            <input type="text" class="form-control" th:field="*{description}" id="productDescription"
+                                   placeholder="Description" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="groupLimit">Group Limit</label>
+                            <div class="input-group">
+                                <input type="number" step="1" th:field="*{groupLimit}" class="form-control"
+                                       id="groupLimit"
+                                       placeholder="Max tickets sold in group">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success">Save product group</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+<script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+</body>
+</html>

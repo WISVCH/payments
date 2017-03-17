@@ -40,4 +40,8 @@ public interface ProductService {
     void addProductToGroup(Product product, ProductGroup productGroup);
 
     void deleteProductGroup(int productGroupId);
+
+    ProductGroup getProductGroupById(Integer productGroupId);
+
+    void editProductGroup(ProductGroupRequest productGroupRequest);
 }

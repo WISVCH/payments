@@ -10,7 +10,7 @@ public class ProductRequest {
 
     @Getter
     @Setter
-    int productId;
+    int id;
     @Setter
     @Getter
     int committeeId;

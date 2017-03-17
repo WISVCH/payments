@@ -4,6 +4,7 @@ import ch.wisv.payments.admin.committees.CommitteeRepository;
 import ch.wisv.payments.admin.products.request.ProductGroupRequest;
 import ch.wisv.payments.admin.products.request.ProductRequest;
 import ch.wisv.payments.exception.CommmitteeNotFoundException;
+import ch.wisv.payments.exception.ProductGroupInUseException;
 import ch.wisv.payments.exception.ProductInUseException;
 import ch.wisv.payments.model.*;
 import ch.wisv.payments.rest.OrderService;
@@ -79,9 +80,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void editProduct(ProductRequest productRequest) {
-        if (productRequest.getProductId() != 0) {
+        if (productRequest.getId() != 0) {
             Committee committee = committeeRepository.findOne(productRequest.getCommitteeId());
-            Product product = productRepository.findOne(productRequest.getProductId());
+            Product product = productRepository.findOne(productRequest.getId());
 
             product.setName(productRequest.getName());
             product.setDescription(productRequest.getDescription());
@@ -99,6 +100,17 @@ public class ProductServiceImpl implements ProductService {
                 product.setProductGroup(null);
                 productRepository.save(product);
             }
+        }
+    }
+
+    @Override
+    public void deleteProduct(int productId) {
+        List<Order> orders = orderService.getOrdersByProductId(productId);
+
+        if (orders.size() > 0) {
+            throw new ProductInUseException("Products are already ordered");
+        } else {
+            productRepository.delete(productId);
         }
     }
 
@@ -130,20 +142,32 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void deleteProduct(int productId) {
-        List<Order> orders = orderService.getOrdersByProductId(productId);
+    public ProductGroup getProductGroupById(Integer productGroupId) {
+        return productGroupRepository.findOne(productGroupId);
+    }
 
-        if (orders.size() > 0) {
-            throw new ProductInUseException("Products are already ordered");
-        } else {
-            productRepository.delete(productId);
+    @Override
+    public void editProductGroup(ProductGroupRequest productGroupRequest) {
+        if (productGroupRequest.getId() != 0) {
+            Committee committee = committeeRepository.findOne(productGroupRequest.getCommitteeId());
+            ProductGroup productGroup = productGroupRepository.findOne(productGroupRequest.getId());
+
+            productGroup.setCommittee(committee);
+            productGroup.setName(productGroupRequest.getName());
+            productGroup.setDescription(productGroupRequest.getDescription());
+            productGroup.setGroupLimit(productGroupRequest.getGroupLimit());
+
+            productGroupRepository.saveAndFlush(productGroup);
         }
     }
 
     @Override
     public void deleteProductGroup(int productGroupId) {
-        productGroupRepository.findOne(productGroupId).getProducts()
-                .forEach(p -> p.setProductGroup(null));
-        productGroupRepository.delete(productGroupId);
+        ProductGroup productGroup = productGroupRepository.findOne(productGroupId);
+        if (!productGroup.getProducts().isEmpty()) {
+            throw new ProductGroupInUseException("Product group must be empty");
+        } else {
+            productGroupRepository.delete(productGroupId);
+        }
     }
 }
