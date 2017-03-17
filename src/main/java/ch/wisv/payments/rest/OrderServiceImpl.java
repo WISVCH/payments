@@ -137,6 +137,28 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findAllByProductsId(productId);
     }
 
+    @Override
+    public List<Order> getOrdersByCommittee(Committee committee) {
+        return orderRepository.findAllByProductsCommittee(committee);
+    }
+
+    @Override
+    public Float getTransactionCostByCommittee(Committee committee) {
+        List<Order> orders = getOrdersByCommittee(committee);
+        float cost = 0;
+        float costPerOrder = 0.35F;
+
+        for (Order order : orders) {
+            if (!order.getProducts().stream().allMatch(product -> product.getCommittee().equals(committee))) {
+                long committeeCount = order.getProducts().stream().map(Product::getCommittee).distinct().count();
+                cost += costPerOrder / committeeCount;
+            } else {
+                cost += costPerOrder;
+            }
+        }
+        return cost;
+    }
+
     private class OrderNotFoundException extends RuntimeException {
     }
 }

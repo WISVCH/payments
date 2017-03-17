@@ -1,5 +1,6 @@
 package ch.wisv.payments.rest.repository;
 
+import ch.wisv.payments.model.Committee;
 import ch.wisv.payments.model.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -15,4 +16,8 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
     Optional<Order> findByPublicReference(String publicReference);
 
     List<Order> findAllByProductsId(int id);
+
+    List<Order> findAllByProductsCommittee(Committee committee);
+
+
 }

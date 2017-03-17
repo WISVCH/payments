@@ -58,6 +58,7 @@ dependencies {
     compile("com.zaxxer:HikariCP")
     compile("org.flywaydb:flyway-core:4.0.1")
     compile("org.webjars:bootstrap:3.3.7-1")
+    compile("org.webjars:font-awesome:4.7.0")
     compile("org.webjars.bower:wisvch-bootstrap-theme:0.0.3")
 
     compile("org.thymeleaf:thymeleaf-spring4:3.0.3.RELEASE")

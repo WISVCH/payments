@@ -38,6 +38,8 @@
                             th:href="@{/products}" href="#">Products</a></li>
                     <li th:classappend="${#httpServletRequest.getRequestURI().contains('/orders') ? 'active':''}"><a
                             th:href="@{/orders}">Orders</a></li>
+                    <li th:classappend="${#httpServletRequest.getRequestURI().contains('/committeeinfo') ? 'active':''}"><a
+                            th:href="@{/committeeinfo}">Committee Info</a></li>
                 </ul>
             </div>
         </div>
