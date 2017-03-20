@@ -37,24 +37,7 @@
         <div th:replace="fragments/sidebar :: sidebar"></div>
     </div>
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-        <h1 class="page-header">Committee Info</h1>
-
-        <div class="row">
-            <p>This page is where you can find all specifics for committees</p>
-
-            <p>Select a committee:</p>
-
-            <form th:action="@{/committeeinfo/}"></form>
-            <div class="form-group">
-                <select class="form-control" id="committeeNameGroup">
-                    <option th:each="committee : ${committees}"
-                            th:value="${committee.id}"
-                            th:text="${committee.getName().getName()} + ' ' +  ${committee.year}">
-                    </option>
-                </select>
-            </div>
-        </div>
-
+        <h1 class="page-header" th:text="${committee.getName().getName() + ' ' + committee.getYear()}">Commitee</h1>
 
         <div th:if="${selected}">
             <div class="row">
@@ -137,20 +120,10 @@
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.12/datatables.min.js"></script>
 <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
 <script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
-<script th:inline="javascript">
-    /*<![CDATA[*/
-
-    $('select').on('change', function () {
-        window.location.href = [[@{
-            /committeeinfo/
-        }
-        ]]
-        +this.value;
-    })
-
-    $('#ordersTable').DataTable();
-
-    /*]]>*/
+<script>
+    $(document).ready(function () {
+        $('#ordersTable').DataTable();
+    });
 </script>
 </body>
 </html>
