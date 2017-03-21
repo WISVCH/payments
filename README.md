@@ -60,11 +60,30 @@ async function main() {
 
 main();
 ```
-
 (You can copy-paste this snippet into the Dev console of your browser to try it out. It requires Chrome 55+.
 
-#### PHP
-[Code example required](https://github.com/WISVCH/payments/issues/6)
+#### PHP (you filthy sjaarsCH)
+```php
+$url = 'http://localhost:9000/api/orders';
+$data = [
+    'name': "Thomas Ticket",
+    'email': "thomasticket@example.com",
+    'returnUrl': "<return-url>",
+    'productKeys': ["<product-key>", "<product-key>"]
+];
+
+$options = [
+    'http' => [
+        'header'  => [
+          "Content-Type:application/json"
+        ],
+        'method'  => "POST",
+        'content' => json_encode($data)
+    ]
+];
+
+$response = json_decode(file_get_contents($url, false, stream_context_create($options)));
+```
 
 # HootHub
 This project currently is quite minimal, and offers lots of opportunities for great features built by you!
