@@ -62,7 +62,7 @@ main();
 ```
 (You can copy-paste this snippet into the Dev console of your browser to try it out. It requires Chrome 55+.
 
-#### PHP (you filthy sjaarscCH)
+#### PHP (you filthy sjaarsCH)
 ```php
 $url = 'http://localhost:9000/api/orders';
 $data = [
