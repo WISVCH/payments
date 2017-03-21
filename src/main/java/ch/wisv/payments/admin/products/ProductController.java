@@ -4,6 +4,7 @@ import ch.wisv.payments.admin.committees.CommitteeService;
 import ch.wisv.payments.admin.products.request.ProductGroupRequest;
 import ch.wisv.payments.admin.products.request.ProductRequest;
 import ch.wisv.payments.model.Product;
+import ch.wisv.payments.model.ProductGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,7 +44,7 @@ public class ProductController {
         Product product = productService.getProductById(productId);
         ProductRequest productRequest = new ProductRequest();
 
-        productRequest.setProductId(product.getId());
+        productRequest.setId(product.getId());
         productRequest.setName(product.getName());
         productRequest.setDescription(product.getDescription());
         productRequest.setPrice(product.getPrice());
@@ -58,13 +59,14 @@ public class ProductController {
 
         model.addAttribute("product", productRequest);
 
-        return "edit";
+        return "editProduct";
     }
 
     @PostMapping(value = "/add")
-    public String addProduct(@ModelAttribute @Validated ProductRequest productRequest) {
+    public String addProduct(@ModelAttribute @Validated ProductRequest productRequest, RedirectAttributes redirectAttributes) {
         productService.addProduct(productRequest);
 
+        redirectAttributes.addFlashAttribute("message", productRequest.getName() + " successfully added.");
         return "redirect:/products";
     }
 
@@ -72,25 +74,65 @@ public class ProductController {
     public String editProduct(@ModelAttribute @Validated ProductRequest productRequest, RedirectAttributes redirectAttributes) {
         productService.editProduct(productRequest);
 
-        redirectAttributes.addFlashAttribute("message", productRequest.getName() + " successfully updated!");
-
+        redirectAttributes.addFlashAttribute("message", productRequest.getName() + " successfully updated.");
         return "redirect:/products";
     }
 
     @PostMapping(value = "/delete/{productId}")
     public String deleteProduct(@PathVariable int productId, RedirectAttributes redirectAttributes) {
-        try {
-            productService.deleteProduct(productId);
-        } catch (RuntimeException e) {
-            redirectAttributes.addFlashAttribute("error", e.getMessage());
-        }
+        productService.deleteProduct(productId);
+        redirectAttributes.addFlashAttribute("message", "Product successfully removed.");
 
         return "redirect:/products";
     }
 
-    @PostMapping(value = "/addGroup")
-    public String addProductGroup(@ModelAttribute @Validated ProductGroupRequest productGroupRequest) {
+    @PostMapping(value = "/group/add")
+    public String addProductGroup(@ModelAttribute @Validated ProductGroupRequest productGroupRequest, RedirectAttributes redirectAttributes) {
         productService.addProductGroup(productGroupRequest);
+
+        redirectAttributes.addFlashAttribute("message", "Product group " + productGroupRequest.getName() + " successfully added.");
+
+        return "redirect:/products";
+    }
+
+    @GetMapping(value = "/group/edit/{productGroupId}")
+    public String productGroupEdit(@PathVariable Integer productGroupId, Model model) {
+        model.addAttribute("committees", committeeService.getAllCommittees());
+
+        ProductGroup productGroup = productService.getProductGroupById(productGroupId);
+        ProductGroupRequest productGroupRequest = new ProductGroupRequest();
+
+        productGroupRequest.setId(productGroup.getId());
+        productGroupRequest.setName(productGroup.getName());
+        productGroupRequest.setCommitteeId(productGroup.getCommittee().getId());
+        productGroupRequest.setDescription(productGroup.getDescription());
+        productGroupRequest.setGroupLimit(productGroup.getGroupLimit());
+
+        model.addAttribute("productGroup", productGroupRequest);
+
+        return "editProductGroup";
+    }
+
+    @PostMapping(value = "/group/edit")
+    public String editProductGroup(@ModelAttribute @Validated ProductGroupRequest productGroupRequest, RedirectAttributes redirectAttributes) {
+        productService.editProductGroup(productGroupRequest);
+
+        redirectAttributes.addFlashAttribute("message", productGroupRequest.getName() + " successfully updated.");
+
+        return "redirect:/products";
+    }
+
+    @PostMapping(value = "/group/delete/{productGroupId}")
+    public String deleteProductGroup(@PathVariable int productGroupId, RedirectAttributes redirectAttributes) {
+        productService.deleteProductGroup(productGroupId);
+        redirectAttributes.addFlashAttribute("message", "Product group successfully removed.");
+
+        return "redirect:/products";
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public String formErrorHandler(RuntimeException e, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("error", e.getMessage());
 
         return "redirect:/products";
     }

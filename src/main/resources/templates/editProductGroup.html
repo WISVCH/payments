@@ -46,10 +46,9 @@
                     <h3 class="panel-title">Edit</h3>
                 </div>
                 <div class="panel-body col-lg-12">
-                    <!--/*@thymesVar id="product" type="ch.wisv.payments.admin.products.request.ProductRequest"*/-->
-                    <form class="form-horizontal" th:action="@{/products/edit}" th:object="${product}"
-                          method="post">
-                        <input type="hidden" th:field="*{productId}">
+                    <!--/*@thymesVar id="productGroup" type="ch.wisv.payments.admin.products.request.ProductGroupRequest"*/-->
+                    <form th:action="@{/products/group/edit}" th:object="${productGroup}" method="post">
+                        <input type="hidden" th:field="*{id}">
                         <div class="form-group">
                             <label for="committeeName">Committee</label>
                             <select class="form-control" th:field="*{committeeId}" id="committeeName">
@@ -60,7 +59,7 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="productName">Product name</label>
+                            <label for="productName">Group Name</label>
                             <input type="text" class="form-control" th:field="*{name}" id="productName"
                                    placeholder="Name"
                                    required>
@@ -71,46 +70,14 @@
                                    placeholder="Description" required>
                         </div>
                         <div class="form-group">
-                            <label for="productGroupId">Product Group</label>
-                            <select class="form-control" th:field="*{groupId}" id="productGroupId">
-                                <option th:value="0">No Product Group</option>
-                                <option th:each="group : ${productGroups}"
-                                        th:value="${group.id}"
-                                        th:text="${group.getName()}">
-                                </option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="productPrice">Amount (in euro)</label>
+                            <label for="groupLimit">Group Limit</label>
                             <div class="input-group">
-                                <div class="input-group-addon">€</div>
-                                <input type="number" step="0.01" th:field="*{price}" class="form-control"
-                                       id="productPrice"
-                                       placeholder="Price" required>
+                                <input type="number" step="1" th:field="*{groupLimit}" class="form-control"
+                                       id="groupLimit"
+                                       placeholder="Max tickets sold in group">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="productLimit">Product Limit</label>
-                            <div class="input-group">
-                                <input type="number" step="1" th:field="*{availableProducts}" class="form-control"
-                                       id="productLimit"
-                                       placeholder="Available Tickets">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="orderLimit">Limit per order</label>
-                            <div class="input-group">
-                                <input type="number" step="1" th:field="*{limitPerOrder}" class="form-control"
-                                       id="orderLimit"
-                                       placeholder="Limit per order">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="ReturnURL">Return URL (Optional)</label>
-                            <input type="text" class="form-control" th:field="*{returnURL}" id="ReturnURL"
-                                   placeholder="Return URL">
-                        </div>
-                        <button type="submit" class="btn btn-default">Edit product</button>
+                        <button type="submit" class="btn btn-success">Save product group</button>
                     </form>
                 </div>
             </div>
