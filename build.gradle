@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = '1.5.2.RELEASE'
+        springBootVersion = '1.5.4.RELEASE'
     }
     repositories {
         mavenCentral()
@@ -60,11 +60,11 @@ dependencies {
     compile("org.webjars:bootstrap:3.3.7-1")
     compile("org.webjars.bower:wisvch-bootstrap-theme:0.0.3")
 
-    compile("org.thymeleaf:thymeleaf-spring4:3.0.3.RELEASE")
-    compile("org.thymeleaf:thymeleaf:3.0.3.RELEASE")
-    compile("org.thymeleaf.extras:thymeleaf-extras-springsecurity4:3.0.0.RELEASE")
+    compile("org.thymeleaf:thymeleaf-spring4:3.0.6.RELEASE")
+    compile("org.thymeleaf:thymeleaf:3.0.6.RELEASE")
+    compile("org.thymeleaf.extras:thymeleaf-extras-springsecurity4:3.0.2.RELEASE")
 
-    compile("nl.stil4m:mollie-api:2.6.0")
+    compile("nl.stil4m:mollie-api:2.6.2")
     compile("ch.wisv:wisvch-connect-client:1.2.6.0") {
         // Workaround for https://github.com/mitreid-connect/OpenID-Connect-Java-Spring-Server/pull/1084
         exclude module: 'bcprov-jdk15on'
@@ -74,7 +74,7 @@ dependencies {
     runtime('org.postgresql:postgresql')
     runtime("org.hsqldb:hsqldb")
 
-    testCompile 'io.rest-assured:rest-assured:3.0.1'
+    testCompile 'io.rest-assured:rest-assured:3.0.3'
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
