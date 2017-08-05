@@ -1,10 +1,11 @@
-package ch.wisv.payments;
+package ch.wisv.payments.integration;
 
+import ch.wisv.payments.PaymentsTestApplication;
 import ch.wisv.payments.admin.committees.CommitteeRepository;
 import ch.wisv.payments.model.Committee;
 import ch.wisv.payments.model.CommitteeEnum;
 import ch.wisv.payments.model.Product;
-import ch.wisv.payments.rest.MailServiceImpl;
+import ch.wisv.payments.rest.MailService;
 import ch.wisv.payments.rest.MolliePaymentService;
 import ch.wisv.payments.rest.repository.ProductGroupRepository;
 import ch.wisv.payments.rest.repository.ProductRepository;
@@ -14,7 +15,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -22,7 +22,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.time.Year;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = PaymentsTestApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 public abstract class RestIntegrationTest {
 
@@ -39,14 +39,13 @@ public abstract class RestIntegrationTest {
     ProductRepository productRepository;
 
     @Autowired
-    ProductGroupRepository productGroupRepository;
-
-    @MockBean
-    protected
     MolliePaymentService paymentService;
 
-    @MockBean
-    MailServiceImpl mailService;
+    @Autowired
+    MailService mailService;
+
+    @Autowired
+    ProductGroupRepository productGroupRepository;
 
     @Before
     public void initRestIntegrationTest() {

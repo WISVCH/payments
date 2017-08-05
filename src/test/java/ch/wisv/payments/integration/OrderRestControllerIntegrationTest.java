@@ -1,6 +1,5 @@
-package ch.wisv.payments.rest;
+package ch.wisv.payments.integration;
 
-import ch.wisv.payments.RestIntegrationTest;
 import ch.wisv.payments.model.Order;
 import ch.wisv.payments.model.OrderRequest;
 import ch.wisv.payments.model.OrderResponse;
