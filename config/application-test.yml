@@ -1,8 +1,39 @@
+spring:
+  mail:
+    host: localhost
+    port: 1025
+  # DATABASE PROPERTIES
+  datasource:
+    driverClassName: org.hsqldb.jdbc.JDBCDriver
+    url: jdbc:hsqldb:mem:payments
+    username: sa
+    password:
+
+  data.jpa.repositories.enabled: true
+  jpa:
+    show-sql: false
+    database-platform: org.hibernate.dialect.HSQLDialect
+    database: HSQL
+    generate-ddl: true
+    hibernate.ddl-auto: create-drop
+    properties.hibernate.default_schema: PUBLIC
+
+  # Thymeleaf
+  thymeleaf:
+    mode: HTML
+
+security.basic.enabled: false
+flyway.enabled: false
+
+# Serve connect
+server.port: 9000
+
 connect:
   issuerUri: https://connect.ch.tudelft.nl/
   clientUri: http://localhost:9000/
 
 payments:
+  mail.sender: sender@mail.com
   #This is the URL Mollie calls when an order gets an update.
   # https://www.mollie.com/nl/docs/webhook
   webhookUrl: http://localhost:9000/
@@ -10,3 +41,9 @@ payments:
   # The return Url is the URL to which the user is redirected after the payment.
   # Can (and should) be overriden when creating a new order. This acts as a default fallback.
   returnUrl: http://localhost:9000/
+
+  admin:
+    groups: chbeheer,bestuur,hoothub
+
+    username: admin
+    password: password
