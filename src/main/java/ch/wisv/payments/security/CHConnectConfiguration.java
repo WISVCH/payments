@@ -22,7 +22,7 @@ import java.util.List;
 import static org.mitre.openid.connect.client.OIDCAuthenticationFilter.FILTER_PROCESSES_URL;
 
 @Component
-@ConfigurationProperties(prefix = "wisvch.connect")
+@ConfigurationProperties(prefix = "connect")
 @Validated
 public class CHConnectConfiguration {
 

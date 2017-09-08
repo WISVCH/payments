@@ -55,6 +55,7 @@ dependencies {
     compile('org.projectlombok:lombok')
     compile("org.hibernate:hibernate-validator")
     compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+    compile('com.jayway.jsonpath:json-path:2.4.0')
     compile("com.zaxxer:HikariCP")
     compile("org.flywaydb:flyway-core:4.0.1")
     compile("org.webjars:bootstrap:3.3.7-1")
