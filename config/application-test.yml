@@ -31,6 +31,7 @@ server.port: 9000
 connect:
   issuerUri: https://connect.ch.tudelft.nl/
   clientUri: http://localhost:9000/
+  adminGroups: chbeheer,bestuur,hoothub
 
 payments:
   mail.sender: sender@mail.com
@@ -43,7 +44,5 @@ payments:
   returnUrl: http://localhost:9000/
 
   admin:
-    groups: chbeheer,bestuur,hoothub
-
     username: admin
     password: password
