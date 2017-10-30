@@ -12,7 +12,7 @@ import org.mitre.openid.connect.client.service.impl.PlainAuthRequestUrlBuilder;
 import org.mitre.openid.connect.client.service.impl.StaticSingleIssuerService;
 import org.mitre.openid.connect.web.UserInfoInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
+import org.springframework.boot.actuate.autoconfigure.ManagementServerProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -39,7 +39,7 @@ import static org.mitre.openid.connect.client.OIDCAuthenticationFilter.FILTER_PR
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
-@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
+@Order(ManagementServerProperties.ACCESS_OVERRIDE_ORDER)
 public class CHConnectSecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final CHConnectConfiguration properties;
     private final ClientConfigurationService clientConfigurationService;
