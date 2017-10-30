@@ -1,3 +1,5 @@
+import org.springframework.boot.gradle.run.BootRunTask
+
 buildscript {
     ext {
         springBootVersion = '1.5.7.RELEASE'
@@ -51,6 +53,7 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-web')
     compile("org.springframework.boot:spring-boot-starter-log4j2")
     compile("org.springframework.boot:spring-boot-starter-mail")
+    compile("org.springframework.boot:spring-boot-starter-actuator")
 
     compile('org.projectlombok:lombok')
     compile("org.hibernate:hibernate-validator")
@@ -82,7 +85,7 @@ dependencies {
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
-task dev(type: org.springframework.boot.gradle.run.BootRunTask) {
+task dev(type: BootRunTask) {
     group = 'Application'
     doFirst() {
         main = project.mainClassName
