@@ -2,7 +2,7 @@ import org.springframework.boot.gradle.run.BootRunTask
 
 buildscript {
     ext {
-        springBootVersion = '1.5.7.RELEASE'
+        springBootVersion = '1.5.8.RELEASE'
     }
     repositories {
         mavenCentral()
