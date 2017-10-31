@@ -28,6 +28,16 @@ flyway.enabled: false
 # Serve connect
 server.port: 9000
 
+#Spring Boot Actuator endpoint settings
+management:
+  context-path: /management
+  security.roles: ROLE_ADMIN
+
+# Disable all endpoints except health
+endpoints:
+  enabled: false
+  health.enabled: true
+
 connect:
   issuerUri: https://connect.ch.tudelft.nl/
   clientUri: http://localhost:9000/
