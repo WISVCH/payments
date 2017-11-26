@@ -74,3 +74,4 @@ application.yml
 build/
 src/main/resources/templates/fragments/product/
 config/oidc-client-registration.json
+*.iml
