@@ -29,7 +29,8 @@ public enum CommitteeEnum {
     WIFI("WiFi"),
     W3CIE("W3Cie"),
     WIEWIE("WIEWIE"),
-    WOCKY("Wocky!");
+    WOCKY("Wocky!"),
+    BESTUUR("Bestuur");
 
     private final String name;
 
