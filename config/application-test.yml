@@ -57,3 +57,7 @@ payments:
   admin:
     username: admin
     password: password
+
+events:
+  username: CH Events
+  password: secret
