@@ -14,6 +14,7 @@ import javax.validation.constraints.NotNull;
 import java.nio.charset.Charset;
 import java.util.Base64;
 
+import static ch.wisv.payments.model.eventsync.EventsSyncEnum.valueOf;
 import static ch.wisv.payments.util.ResponseEntityBuilder.createResponseEntity;
 
 @RestController
@@ -56,11 +57,11 @@ public class EventsSyncRestController {
             return createResponseEntity(HttpStatus.UNAUTHORIZED, "User is not authorized", null);
         }
 
-        switch (productEventsSync.getTrigger()) {
-            case "PRODUCT_CREATE_EDIT":
+        switch (valueOf(productEventsSync.getTrigger())) {
+            case PRODUCT_CREATE_EDIT:
                 this.createOrUpdate(productEventsSync);
                 break;
-            case "PRODUCT_DELETE":
+            case PRODUCT_DELETE:
                 eventsSyncProductService.deleteProduct(productEventsSync);
                 break;
             default:
