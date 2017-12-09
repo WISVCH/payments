@@ -48,7 +48,6 @@ public class EventsSyncRestController {
         this.eventsSyncProductService = eventsSyncProductService;
     }
 
-
     @PostMapping("/product/")
     public ResponseEntity<?> eventSync(HttpServletRequest request, @RequestBody ProductEventsSync productEventsSync) {
         String[] credentials = this.decryptBasicAuthHeader(request.getHeader("Authorization"));
@@ -59,7 +58,7 @@ public class EventsSyncRestController {
 
         switch (productEventsSync.getTrigger()) {
             case "PRODUCT_CREATE_EDIT":
-                this.determineCreateOrUpdate(productEventsSync);
+                this.createOrUpdate(productEventsSync);
                 break;
             case "PRODUCT_DELETE":
                 eventsSyncProductService.deleteProduct(productEventsSync);
@@ -85,7 +84,7 @@ public class EventsSyncRestController {
      *
      * @param productEventsSync of type ProductEventsSync
      */
-    private void determineCreateOrUpdate(ProductEventsSync productEventsSync) {
+    private void createOrUpdate(ProductEventsSync productEventsSync) {
         try {
             productService.getProductByKey(productEventsSync.getKey());
 
