@@ -41,7 +41,7 @@ public class EventsSyncRestController {
     /**
      * Constructor ProductService.
      *
-     * @param productService of type ProductService
+     * @param productService           of type ProductService
      * @param eventsSyncProductService of type EventsSyncProductService
      */
     public EventsSyncRestController(ProductService productService, EventsSyncProductService eventsSyncProductService) {
@@ -57,15 +57,17 @@ public class EventsSyncRestController {
             return createResponseEntity(HttpStatus.UNAUTHORIZED, "User is not authorized", null);
         }
 
-        switch (valueOf(productEventsSync.getTrigger())) {
-            case PRODUCT_CREATE_EDIT:
-                this.createOrUpdate(productEventsSync);
-                break;
-            case PRODUCT_DELETE:
-                eventsSyncProductService.deleteProduct(productEventsSync);
-                break;
-            default:
-                return createResponseEntity(HttpStatus.BAD_REQUEST, "Events trigger not supported!", null);
+        try {
+            switch (valueOf(productEventsSync.getTrigger())) {
+                case PRODUCT_CREATE_EDIT:
+                    this.createOrUpdate(productEventsSync);
+                    break;
+                case PRODUCT_DELETE:
+                    eventsSyncProductService.deleteProduct(productEventsSync);
+                    break;
+            }
+        } catch (IllegalArgumentException e) {
+            return createResponseEntity(HttpStatus.BAD_REQUEST, "Events trigger not supported!", null);
         }
 
         return createResponseEntity(HttpStatus.OK, null, null);
