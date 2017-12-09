@@ -19,6 +19,8 @@ public interface ProductService {
 
     Product getProductById(Integer productId);
 
+    Product getProductByKey(String key);
+
     Set<Product> getProductByCommittee(CommitteeEnum committeeEnum, int year);
 
     boolean isProductAvailable(Integer productId);

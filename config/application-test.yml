@@ -26,7 +26,8 @@ security.basic.enabled: false
 flyway.enabled: false
 
 # Serve connect
-server.port: 9000
+server:
+  context-path: /payments/
 
 #Spring Boot Actuator endpoint settings
 management:
@@ -56,3 +57,7 @@ payments:
   admin:
     username: admin
     password: password
+
+events:
+  username: CH Events
+  password: secret

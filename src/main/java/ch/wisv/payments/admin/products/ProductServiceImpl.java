@@ -5,6 +5,7 @@ import ch.wisv.payments.admin.products.request.ProductGroupRequest;
 import ch.wisv.payments.admin.products.request.ProductRequest;
 import ch.wisv.payments.exception.ProductGroupInUseException;
 import ch.wisv.payments.exception.ProductInUseException;
+import ch.wisv.payments.exception.ProductNotFoundException;
 import ch.wisv.payments.model.*;
 import ch.wisv.payments.rest.OrderService;
 import ch.wisv.payments.rest.repository.ProductGroupRepository;
@@ -114,6 +115,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product getProductById(Integer productId) {
         return productRepository.findOne(productId);
+    }
+
+    @Override
+    public Product getProductByKey(String key) {
+        return productRepository.findOneByKey(key).orElseThrow(ProductNotFoundException::new);
     }
 
     @Override

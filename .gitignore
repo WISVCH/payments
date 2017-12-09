@@ -68,8 +68,10 @@ fabric.properties
 hs_err_pid*
 
 application.properties
+application.yml
 .gradle/
 .idea/
 build/
 src/main/resources/templates/fragments/product/
 config/oidc-client-registration.json
+*.iml

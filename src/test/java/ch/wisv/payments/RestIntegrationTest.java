@@ -8,6 +8,8 @@ import ch.wisv.payments.rest.MailServiceImpl;
 import ch.wisv.payments.rest.MolliePaymentService;
 import ch.wisv.payments.rest.repository.ProductGroupRepository;
 import ch.wisv.payments.rest.repository.ProductRepository;
+import io.restassured.RestAssured;
+import io.restassured.config.RedirectConfig;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -33,23 +35,25 @@ public abstract class RestIntegrationTest {
     int port;
 
     @Autowired
-    CommitteeRepository committeeRepository;
+    protected CommitteeRepository committeeRepository;
 
     @Autowired
-    ProductRepository productRepository;
+    protected ProductRepository productRepository;
 
     @Autowired
-    ProductGroupRepository productGroupRepository;
+    protected ProductGroupRepository productGroupRepository;
 
     @MockBean
-    protected
-    MolliePaymentService paymentService;
+    protected MolliePaymentService paymentService;
 
     @MockBean
-    MailServiceImpl mailService;
+    protected MailServiceImpl mailService;
 
     @Before
-    public void initRestIntegrationTest() {
+    public void setXAuthIntegrationTest() {
+        RestAssured.port = port;
+        RestAssured.config().redirect(RedirectConfig.redirectConfig().followRedirects(false));
+        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
     }
 
     @After
