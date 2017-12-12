@@ -23,7 +23,7 @@ public class EventsSyncRestControllerIntegrationTest extends RestIntegrationTest
     private final String PRODUCT_DESCRIPTION = "Ticket for the MatCH activity.";
     private final String PRODUCT_COMMITTEE = "MATCH";
 
-    private final String REQUEST_BODY_CREATE_EDIT = "{\"trigger\": \"PRODUCT_CREATE_EDIT\",\"price\": " + PRODUCT_PRICE + ",\"description\": \"" + PRODUCT_DESCRIPTION + "\"," +
+    private final String REQUEST_BODY_CREATE_EDIT = "{\"trigger\": \"PRODUCT_CREATE_UPDATE\",\"price\": " + PRODUCT_PRICE + ",\"description\": \"" + PRODUCT_DESCRIPTION + "\"," +
             "\"title\":\"" + PRODUCT_NAME + "\",\"key\":\"" + PRODUCT_KEY + "\",\"organizedBy\": \"" + PRODUCT_COMMITTEE + "\"}";
     private final String REQUEST_BODY_DELETE = "{\"trigger\": \"PRODUCT_DELETE\",\"key\":\"" + PRODUCT_KEY + "\"}";
     private final String REQUEST_BODY_NOT_SUPPORTED_TRIGGER = "{\"trigger\": \"FAILED_TRIGGER\",\"price\": " + PRODUCT_PRICE + "," +
