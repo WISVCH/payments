@@ -59,7 +59,7 @@ public class EventsSyncRestController {
 
         try {
             switch (valueOf(productEventsSync.getTrigger())) {
-                case PRODUCT_CREATE_EDIT:
+                case PRODUCT_CREATE_UPDATE:
                     this.createOrUpdate(productEventsSync);
                     break;
                 case PRODUCT_DELETE:
