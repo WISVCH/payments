@@ -19,4 +19,6 @@ public class OrderRequest {
 
     @URL
     String returnUrl;
+
+    boolean mailConfirmation = true;
 }
