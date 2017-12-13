@@ -1,0 +1,1 @@
+ALTER TABLE orders ADD mail_confirmation boolean NOT NULL DEFAULT true;
