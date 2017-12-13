@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name="orders")
+@Table(name = "orders")
 @NoArgsConstructor
 public class Order {
 
@@ -21,6 +21,7 @@ public class Order {
         this.name = name;
         this.email = email;
         this.publicReference = UUID.randomUUID().toString();
+        this.mailConfirmation = true;
     }
 
     @GeneratedValue
@@ -63,5 +64,9 @@ public class Order {
     @Getter
     @Setter
     String returnURL;
+
+    @Getter
+    @Setter
+    boolean mailConfirmation;
 
 }

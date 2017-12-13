@@ -27,7 +27,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     public OrderServiceImpl(ProductRepository productRepository,
-                            OrderRepository orderRepository, ProductGroupRepository productGroupRepository) {
+            OrderRepository orderRepository, ProductGroupRepository productGroupRepository
+    ) {
         this.productRepository = productRepository;
         this.orderRepository = orderRepository;
         this.productGroupRepository = productGroupRepository;
@@ -52,6 +53,7 @@ public class OrderServiceImpl implements OrderService {
         validateProductLimits(products, request.getProductKeys().size());
 
         Order order = new Order(products, request.getName(), request.getEmail());
+        order.setMailConfirmation(request.isMailConfirmation());
 
         if (request.getReturnUrl() != null) {
             order.setReturnURL(request.getReturnUrl());
