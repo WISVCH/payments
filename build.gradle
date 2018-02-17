@@ -75,7 +75,7 @@ dependencies {
 
     compile("nl.stil4m:mollie-api:2.6.2")
 
-    compile("ch.wisv:wisvch-connect-client:1.3.1.7")
+    compile("ch.wisv:wisvch-connect-client:1.3.2.2")
 
     compileOnly('org.springframework.boot:spring-boot-configuration-processor')
 
