@@ -69,7 +69,8 @@ $data = [
     'name': "Thomas Ticket",
     'email': "thomasticket@example.com",
     'returnUrl': "<return-url>",
-    'productKeys': ["<product-key>", "<product-key>"]
+    'productKeys': ["<product-key>", "<product-key>"],
+    'method': 'CREDIT_CARD'  // options: IDEAL, CREDIT_CARD, SOFORT, PAYPAL
 ];
 
 $options = [
