@@ -43,7 +43,7 @@ public class MolliePaymentService implements PaymentService {
     public OrderResponse registerOrder(Order order) {
         Map<String, Object> metadata = new HashMap<>();
 
-        Optional<String> method = Optional.of("ideal");
+        Optional<String> method = Optional.of(order.getMethod().getName());
 
         if (order.getReturnURL() != null) {
             returnUrl = order.getReturnURL();
@@ -53,7 +53,7 @@ public class MolliePaymentService implements PaymentService {
                 .mapToDouble(Product::getPrice)
                 .sum();
 
-        amount += 0.35;
+        amount = order.getMethod().calculateCostIncludingTransaction(amount);
 
         CreatePayment payment = new CreatePayment(method, amount, "W.I.S.V. 'Christiaan Huygens' Payments",
                 returnUrl + "?reference=" + order.getPublicReference(), Optional.of(webhookUrl), metadata);

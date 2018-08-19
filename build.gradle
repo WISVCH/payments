@@ -64,12 +64,13 @@ dependencies {
     compile("org.webjars:bootstrap:3.3.7-1")
     compile("org.webjars:font-awesome:4.7.0")
     compile("org.webjars.bower:wisvch-bootstrap-theme:0.0.3")
+    compile("net.objecthunter:exp4j:0.4.8")
 
     compile("org.thymeleaf:thymeleaf-spring4:3.0.6.RELEASE")
     compile("org.thymeleaf:thymeleaf:3.0.6.RELEASE")
     compile("org.thymeleaf.extras:thymeleaf-extras-springsecurity4:3.0.2.RELEASE")
 
-    compile("nl.stil4m:mollie-api:2.6.2")
+    compile("nl.stil4m:mollie-api:2.7.0")
 
     compile("ch.wisv:wisvch-connect-client:1.3.2.2")
 
