@@ -10,8 +10,8 @@ import net.objecthunter.exp4j.ExpressionBuilder;
 public enum MollieMethodEnum {
 
     IDEAL("ideal", new ExpressionBuilder("x + 0.35")),
-    CREDIT_CARD("creditcard", new ExpressionBuilder("1.03388 * x + 0.35")),
-    SOFORT("sofort", new ExpressionBuilder("1.01089 * x + 0.35")),
+    CREDIT_CARD("creditcard", new ExpressionBuilder("1.03388 * x + 0.3025")),
+    SOFORT("sofort", new ExpressionBuilder("1.01089 * x + 0.3025")),
     PAYPAL("paypal", new ExpressionBuilder("x + 0.121"));
 
     @Getter
