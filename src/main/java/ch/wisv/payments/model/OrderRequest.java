@@ -20,7 +20,7 @@ public class OrderRequest {
     @URL
     String returnUrl;
 
-    // Default is set to IDEAL, as old implementations do not include the method type in there request.
+    // Default is set to IDEAL, as old implementations do not include the method type in their request.
     String method = "IDEAL";
 
     boolean mailConfirmation = true;

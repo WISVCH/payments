@@ -15,15 +15,15 @@ public class MollieMethodEnumTest extends TestCase {
     public void testCreditCardCost() {
         MollieMethodEnum method = MollieMethodEnum.CREDIT_CARD;
 
-        assertEquals(1.38, method.calculateCostIncludingTransaction(1));
-        assertEquals(0.35, method.calculateCostIncludingTransaction(0));
+        assertEquals(1.34, method.calculateCostIncludingTransaction(1));
+        assertEquals(0.30, method.calculateCostIncludingTransaction(0));
     }
 
     public void testSofortCost() {
         MollieMethodEnum method = MollieMethodEnum.SOFORT;
 
-        assertEquals(1.36, method.calculateCostIncludingTransaction(1));
-        assertEquals(0.35, method.calculateCostIncludingTransaction(0));
+        assertEquals(1.31, method.calculateCostIncludingTransaction(1));
+        assertEquals(0.30, method.calculateCostIncludingTransaction(0));
     }
 
     public void testPaypalCost() {
