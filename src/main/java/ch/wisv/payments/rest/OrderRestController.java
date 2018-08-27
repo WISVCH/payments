@@ -25,7 +25,6 @@ public class OrderRestController {
 
     @PostMapping
     public ResponseEntity<?> requestPayment(@Validated @RequestBody OrderRequest request) {
-
         Order order = orderService.createOrderFromRequest(request);
 
         OrderResponse response = paymentService.registerOrder(order);

@@ -41,6 +41,7 @@ public class TestDataRunner implements CommandLineRunner {
         Committee committee3 = committeeRepository.save(new Committee(CommitteeEnum.LANCIE, 2016));
         Committee committee4 = committeeRepository.save(new Committee(CommitteeEnum.CHIPCIE, 2015));
         Committee committee5 = committeeRepository.save(new Committee(CommitteeEnum.SYMPOSIUM, 2016));
+        Committee committee6 = committeeRepository.save(new Committee(CommitteeEnum.BESTUUR, 2018));
 
         ProductGroup sympoGroup = productGroupRepository.save(
                 new ProductGroup("Symposium 2016", "Group for all CH Symposium tickets", 200, committee5));
@@ -48,12 +49,19 @@ public class TestDataRunner implements CommandLineRunner {
         ProductGroup akcieGroup = productGroupRepository.save(
                 new ProductGroup("AkCie 2016", "Group for all AkCie activities", 0, committee2));
 
+        ProductGroup bestuurGroup = productGroupRepository.save(
+                new ProductGroup("Bestuur 2018", "Group for all Bestuur activities", 0, committee6));
+
         Product sympoStudent = productRepository.save(
                 new Product(committee5, "Student Ticket", "Ticket for students", 10.00F, 0, 0));
         Product sympoBurger = productRepository.save(
                 new Product(committee5, "Regular Ticket", "Ticket for non-students", 20.00F, 0, 0));
         Product lucie = productRepository.save(
                 new Product(committee1, "lucieticket", "Ticket for non-students", 50.00F, 0, 0));
+
+        Product matCH_ticket = new Product(committee6, "MatCH ticket", "Ticket for the MatCH activity.", 3.00f, 5, 5);
+        matCH_ticket.setKey("48b068ab-f4c9-46f7-bcf0-15b2f60bd1b6");
+        Product product = productRepository.save(matCH_ticket);
 
         productService.addProductToGroup(sympoStudent, sympoGroup);
         productService.addProductToGroup(sympoBurger, sympoGroup);
