@@ -12,7 +12,7 @@ public enum MollieMethodEnum {
     /**
      * Bancontact (Belgium).
      */
-    BANCONTACT("bancontact", new ExpressionBuilder("1.01815 * x + 0.3025")),
+//    BANCONTACT("bancontact", new ExpressionBuilder("1.01815 * x + 0.3025")),
 
     /**
      * iDeal (Netherlands)
