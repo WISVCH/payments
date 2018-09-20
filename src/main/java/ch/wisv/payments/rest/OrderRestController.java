@@ -7,7 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin
@@ -15,12 +23,16 @@ import org.springframework.web.bind.annotation.*;
 public class OrderRestController {
 
     private PaymentService paymentService;
+
     private OrderService orderService;
 
+    private WebhookService webhookService;
+
     @Autowired
-    public OrderRestController(PaymentService paymentService, OrderService orderService) {
+    public OrderRestController(PaymentService paymentService, OrderService orderService, WebhookService webhookService) {
         this.paymentService = paymentService;
         this.orderService = orderService;
+        this.webhookService = webhookService;
     }
 
     @PostMapping
@@ -43,11 +55,14 @@ public class OrderRestController {
      * This endpoint is for the paymentprovider. Webhooks will arrive here.
      *
      * @param providerReference The provider Order Reference
+     *
      * @return Status Message
      */
     @RequestMapping(value = "/status", method = RequestMethod.POST)
     public ResponseEntity<?> updateOrderStatus(@RequestParam(name = "id") String providerReference) {
-        paymentService.updateStatusByProviderReference(providerReference);
+        Order order = paymentService.updateStatusByProviderReference(providerReference);
+        webhookService.sendOrderStatusChangeNotification(order);
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

@@ -55,6 +55,7 @@ public class OrderServiceImpl implements OrderService {
         Order order = new Order(products, request.getName(), request.getEmail());
         order.setMailConfirmation(request.isMailConfirmation());
         order.setMethod(MollieMethodEnum.valueOf(request.getMethod()));
+        order.setWebhookUrl(request.getWebhookUrl());
 
         if (request.getReturnUrl() != null) {
             order.setReturnURL(request.getReturnUrl());

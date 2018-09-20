@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import lombok.AccessLevel;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,55 +17,44 @@ import lombok.Setter;
 @Entity
 @Table(name = "orders")
 @NoArgsConstructor
+@Data
 public class Order {
 
     @GeneratedValue
     @Id
-    @Getter
+    @Setter(AccessLevel.NONE)
     int id;
 
-    @Getter
     @ManyToMany
+    @Setter(AccessLevel.NONE)
     List<Product> products;
 
-    @Getter
+    @Setter(AccessLevel.NONE)
     LocalDateTime creationDate;
 
-    @Getter
-    @Setter
     LocalDateTime paidDate;
 
-    @Getter
-    @Setter
     OrderStatus status;
 
-    @Getter
-    @Setter
     MollieMethodEnum method;
 
-    @Getter
+    @Setter(AccessLevel.NONE)
     String publicReference;
 
-    @Getter
-    @Setter
     String providerReference;
 
-    @Getter
+    @Setter(AccessLevel.NONE)
     String name;
 
-    @Getter
+    @Setter(AccessLevel.NONE)
     String email;
 
-    @Getter
-    @Setter
     String paymentURL;
 
-    @Getter
-    @Setter
     String returnURL;
 
-    @Getter
-    @Setter
+    String webhookUrl;
+
     boolean mailConfirmation;
 
     public Order(List<Product> products, String name, String email) {
@@ -73,6 +64,7 @@ public class Order {
         this.name = name;
         this.email = email;
         this.publicReference = UUID.randomUUID().toString();
+        this.method = MollieMethodEnum.IDEAL;
         this.mailConfirmation = true;
     }
 
