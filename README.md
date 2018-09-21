@@ -64,26 +64,26 @@ main();
 
 #### PHP (you filthy sjaarsCH)
 ```php
-$url = 'http://localhost:9000/api/orders';
+$url  = 'http://localhost:9000/api/orders';
 $data = [
-    'name': "Thomas Ticket",
-    'email': "thomasticket@example.com",
-    'returnUrl': "<return-url>",
-    'productKeys': ["<product-key>", "<product-key>"],
-    'method': 'CREDIT_CARD'  // options: IDEAL, CREDIT_CARD, SOFORT, PAYPAL
+  'name'        => "Thomas Ticket",
+  'email'       => "thomasticket@example.com",
+  'returnUrl'   => "<return-url>",
+  'productKeys' => [ "<product-key>", "<product-key>" ],
+  'method'      => 'CREDIT_CARD'  // options: IDEAL, CREDIT_CARD, SOFORT, PAYPAL
 ];
 
 $options = [
-    'http' => [
-        'header'  => [
-          "Content-Type:application/json"
-        ],
-        'method'  => "POST",
-        'content' => json_encode($data)
-    ]
+  'http' => [
+    'header'  => [
+      "Content-Type:application/json",
+    ],
+    'method'  => "POST",
+    'content' => json_encode( $data ),
+  ],
 ];
 
-$response = json_decode(file_get_contents($url, false, stream_context_create($options)));
+$response = json_decode( file_get_contents( $url, false, stream_context_create( $options ) ) );
 ```
 
 # HootHub
