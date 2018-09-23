@@ -55,7 +55,7 @@ Requesting a payment url.
 
 ### `GET` Get order status `/api/v1/orders/{public-reference}`
 
-Get the status of an order
+Get the status of an order.
 
 #### Responses
 
@@ -82,7 +82,6 @@ Get the status of an order
 }
 ```
 
-
 ### Webhook call
 
 The call CH Payments makes about an order status update.
@@ -95,8 +94,6 @@ The call CH Payments makes about an order status update.
   "publicReference": "1073dc09-1b53-427f-ad3f-21b1057dd254"
 }
 ```
-
-
 
 # Code examples
 No idea how to code, but still want to sell tickets on your CH site?

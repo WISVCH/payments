@@ -41,7 +41,6 @@ public class WebhookServiceImpl implements WebhookService {
             log.info("Webhook call " + order.getWebhookUrl() + " for Order " + order.getPublicReference());
         } catch (RestClientException e) {
             log.error("Failed! Webhook call " + order.getWebhookUrl() + " for Order " + order.getPublicReference() + " due to: " + e.getMessage());
-
         }
     }
 }
