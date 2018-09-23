@@ -1,17 +1,14 @@
 package ch.wisv.payments.rest;
 
 import ch.wisv.payments.model.Order;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.message.BasicNameValuePair;
+import net.minidev.json.JSONObject;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestTemplate;
 
 @Slf4j
 @Service
@@ -29,19 +26,22 @@ public class WebhookServiceImpl implements WebhookService {
             return;
         }
 
+        RestTemplate restTemplate = new RestTemplate();
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.appendField("message", "OrderStatus update!");
+        jsonObject.appendField("publicReference", order.getPublicReference());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<String> entity = new HttpEntity<>(jsonObject.toJSONString(), headers);
         try {
-            HttpClient httpclient = HttpClients.createDefault();
-            HttpPost httpPost = new HttpPost(order.getWebhookUrl());
+            restTemplate.postForObject(order.getWebhookUrl(), entity, String.class);
+            log.info("Webhook call " + order.getWebhookUrl() + " for Order " + order.getPublicReference());
+        } catch (RestClientException e) {
+            log.error("Failed! Webhook call " + order.getWebhookUrl() + " for Order " + order.getPublicReference() + " due to: " + e.getMessage());
 
-            List<NameValuePair> params = new ArrayList<>(2);
-            params.add(new BasicNameValuePair("message", "OrderStatus update!"));
-            params.add(new BasicNameValuePair("publicReference", order.getPublicReference()));
-            httpPost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
-
-            httpclient.execute(httpPost);
-            log.info("Webhook " + order.getWebhookUrl() + " called for Order " + order.getPublicReference());
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }
