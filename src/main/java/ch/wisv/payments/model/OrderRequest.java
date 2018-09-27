@@ -20,6 +20,9 @@ public class OrderRequest {
     @URL
     String returnUrl;
 
+    @URL
+    String webhookUrl;
+
     // Default is set to IDEAL, as old implementations do not include the method type in their request.
     String method = "IDEAL";
 

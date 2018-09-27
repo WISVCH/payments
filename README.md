@@ -8,6 +8,93 @@ Below you can find some ready-to-use code examples for your website.
 The administration panel (for now) is only available for board members.
 They can create products to generate the keys required.
 
+# API Endpoints
+
+CH Payments has an API containing the following endpoints.
+
+### `POST` Request payment `/api/v1/orders`
+
+Requesting a payment url.
+
+#### Parameters
+
+|   |   |   |
+|---|---|---|
+| `name` <br> (required)  | string |   The name of the customer  |
+| `email`<br> (required)  | string | The email of the customer for the order confirmation. |
+| `productKeys` <br> (required) | array  | Array of CH Payments products keys of the products the customer wants to order | 
+| `returnUrl`  | string | The URL the customer will be redirected to after the payment process. <br> Default: `https://ch.tudelft.nl/`  |
+|  `method`<br> | string  |  Payment method selection. Possible values: `IDEAL`, `SOFORT`. <br>Default: `IDEAL` |
+| `mailConfirmation` | boolean | Flag if CH Payments should send a Order confirmation email. <br>Default: `true` |
+| `webhookURl`  | string | Set the webhook URL, where CH Payments will send order status updates to. See section **Webhook call**. |
+
+#### Responses
+
+`201 CREATED` - Order has been successfully created
+
+```json
+{
+    "url": "<mollie-url>",
+    "publicReference": "1073dc09-1b53-427f-ad3f-21b1057dd254",
+    "status": "WAITING"
+}
+```
+
+`500 INTERNAL_SERVER_ERROR` - Something went wrong
+
+```json
+{
+    "timestamp": 1537533514873,
+    "status": 500,
+    "error": "Internal Server Error",
+    "exception": "<exception>",
+    "message": "<error-message>",
+    "path": "/payments/api/orders"
+}
+```
+
+### `GET` Get order status `/api/v1/orders/{public-reference}`
+
+Get the status of an order.
+
+#### Responses
+
+`200 OK` - Successful
+
+```json
+{
+    "url": "<mollie-url>",
+    "publicReference": "1073dc09-1b53-427f-ad3f-21b1057dd254",
+    "status": "WAITING"
+}
+```
+
+`500` - Something went wrong
+
+```json
+{
+    "timestamp": 1537533514873,
+    "status": 500,
+    "error": "Internal Server Error",
+    "exception": "<exception>",
+    "message": "<error-message>",
+    "path": "/payments/api/orders"
+}
+```
+
+### Webhook call
+
+The call CH Payments makes about an order status update.
+
+#### Body
+
+```json
+{
+  "message": "OrderStatus update!",
+  "publicReference": "1073dc09-1b53-427f-ad3f-21b1057dd254"
+}
+```
+
 # Code examples
 No idea how to code, but still want to sell tickets on your CH site?
 Use one of these code examples to get going.
@@ -64,26 +151,26 @@ main();
 
 #### PHP (you filthy sjaarsCH)
 ```php
-$url = 'http://localhost:9000/api/orders';
+$url  = 'http://localhost:9000/api/orders';
 $data = [
-    'name': "Thomas Ticket",
-    'email': "thomasticket@example.com",
-    'returnUrl': "<return-url>",
-    'productKeys': ["<product-key>", "<product-key>"],
-    'method': 'CREDIT_CARD'  // options: IDEAL, CREDIT_CARD, SOFORT, PAYPAL
+  'name'        => "Thomas Ticket",
+  'email'       => "thomasticket@example.com",
+  'returnUrl'   => "<return-url>",
+  'productKeys' => [ "<product-key>", "<product-key>" ],
+  'method'      => 'CREDIT_CARD'  // options: IDEAL, CREDIT_CARD, SOFORT, PAYPAL
 ];
 
 $options = [
-    'http' => [
-        'header'  => [
-          "Content-Type:application/json"
-        ],
-        'method'  => "POST",
-        'content' => json_encode($data)
-    ]
+  'http' => [
+    'header'  => [
+      "Content-Type:application/json",
+    ],
+    'method'  => "POST",
+    'content' => json_encode( $data ),
+  ],
 ];
 
-$response = json_decode(file_get_contents($url, false, stream_context_create($options)));
+$response = json_decode( file_get_contents( $url, false, stream_context_create( $options ) ) );
 ```
 
 # HootHub
