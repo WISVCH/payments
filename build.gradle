@@ -65,6 +65,7 @@ dependencies {
     compile("org.webjars:font-awesome:4.7.0")
     compile("org.webjars.bower:wisvch-bootstrap-theme:0.0.3")
     compile("net.objecthunter:exp4j:0.4.8")
+    compile("org.apache.httpcomponents:httpclient")
 
     compile("org.thymeleaf:thymeleaf-spring4:3.0.6.RELEASE")
     compile("org.thymeleaf:thymeleaf:3.0.6.RELEASE")
