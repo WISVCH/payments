@@ -1,9 +1,10 @@
 package ch.wisv.payments.model;
 
-import java.util.List;
 import lombok.Data;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.URL;
+
+import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 @Data
 public class OrderRequest {

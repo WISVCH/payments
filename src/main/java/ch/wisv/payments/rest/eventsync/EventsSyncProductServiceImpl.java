@@ -101,7 +101,7 @@ public class EventsSyncProductServiceImpl implements EventsSyncProductService {
     public void deleteProduct(ProductEventsSync productEventsSync) {
         Product product = this.getProductByKey(productEventsSync.getKey());
 
-        productRepository.delete(product.getId());
+        productRepository.deleteById(product.getId());
     }
 
     /**

@@ -3,7 +3,8 @@ package ch.wisv.payments.admin.products.request;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.NotEmpty;
 
 @NoArgsConstructor
 public class ProductRequest {

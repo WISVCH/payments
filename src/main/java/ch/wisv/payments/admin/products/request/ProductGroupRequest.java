@@ -2,8 +2,8 @@ package ch.wisv.payments.admin.products.request;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 public class ProductGroupRequest {

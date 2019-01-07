@@ -1,174 +1,85 @@
 package ch.wisv.payments.security;
 
-import ch.wisv.connect.client.CHUserInfoFetcher;
-import ch.wisv.connect.common.model.CHUserInfo;
-import com.google.common.collect.ImmutableSet;
-import org.mitre.openid.connect.client.OIDCAuthenticationFilter;
-import org.mitre.openid.connect.client.OIDCAuthenticationProvider;
-import org.mitre.openid.connect.client.service.ClientConfigurationService;
-import org.mitre.openid.connect.client.service.ServerConfigurationService;
-import org.mitre.openid.connect.client.service.impl.DynamicServerConfigurationService;
-import org.mitre.openid.connect.client.service.impl.PlainAuthRequestUrlBuilder;
-import org.mitre.openid.connect.client.service.impl.StaticSingleIssuerService;
-import org.mitre.openid.connect.web.UserInfoInterceptor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.autoconfigure.ManagementServerProperties;
-import org.springframework.context.annotation.Bean;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
-import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.core.oidc.OidcIdToken;
+import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 
-import java.util.Collections;
-
-import static org.mitre.openid.connect.client.OIDCAuthenticationFilter.FILTER_PROCESSES_URL;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 /**
  * CH Connect Security Configuration
  */
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
-@Order(ManagementServerProperties.ACCESS_OVERRIDE_ORDER)
+@ConfigurationProperties("wisvch.connect")
+@Profile("!test")
 public class CHConnectSecurityConfiguration extends WebSecurityConfigurerAdapter {
-    private final CHConnectConfiguration properties;
-    private final ClientConfigurationService clientConfigurationService;
 
-    public CHConnectSecurityConfiguration(CHConnectConfiguration properties, ClientConfigurationService clientConfigurationService) {
-        this.properties = properties;
-        this.clientConfigurationService = clientConfigurationService;
+    private Set<String> adminGroups;
+
+    public void setAdminGroups(Set<String> adminGroups) {
+        this.adminGroups = adminGroups;
     }
 
-    /**
-     * Configure the {@link HttpSecurity} object.
-     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        //@formatter:off
-        http.
-            addFilterBefore(oidcAuthenticationFilter(), AbstractPreAuthenticatedProcessingFilter.class)
-                .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint())
-        .and()
+        http
             .authorizeRequests()
                 .antMatchers("/", "/api/**", "/login**", "/webjars/**", "/fonts/**", "/css/**", "/management/health").permitAll()
                 .anyRequest().hasRole("ADMIN")
-        .and()
-            .formLogin()
-                .loginPage("/login")
-                .successForwardUrl("/dashboard")
-                .permitAll()
-        .and()
-            .logout()
-                .logoutSuccessUrl("/")
-                .permitAll()
-        .and()
-            .csrf().disable();
-        //@formatter:on
+            .and()
+                .oauth2Login().userInfoEndpoint().oidcUserService(oidcUserService());
     }
 
-    /**
-     * Configure OIDC authentication provider in manager.
-     */
-    @Autowired
-    public void configureAuthenticationProvider(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(oidcAuthenticationProvider());
-    }
-
-    /**
-     * Configure the OIDC login path as our authentication entry point.
-     *
-     * @return AuthenticationEntryPoint
-     */
-    @Bean
-    public AuthenticationEntryPoint authenticationEntryPoint() {
-        return new LoginUrlAuthenticationEntryPoint(FILTER_PROCESSES_URL);
-    }
-
-    /**
-     * Register OIDC {@link UserInfoInterceptor}, which makes UserInfo available in MVC views as a request attribute.
-     *
-     * @return WebMvcConfigurerAdapter
-     */
-    @Bean
-    public WebMvcConfigurerAdapter mvcInterceptor() {
-        return new WebMvcConfigurerAdapter() {
-            @Override
-            public void addInterceptors(InterceptorRegistry registry) {
-                registry.addInterceptor(new UserInfoInterceptor());
-            }
+    private OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService() {
+        return userRequest -> {
+            SimpleGrantedAuthority ROLE_ADMIN = new SimpleGrantedAuthority("ROLE_ADMIN");
+            SimpleGrantedAuthority ROLE_USER = new SimpleGrantedAuthority("ROLE_USER");
+            OidcIdToken idToken = userRequest.getIdToken();
+            Collection<String> groups = (Collection<String>) idToken.getClaims().get("ldap_groups");
+            List<SimpleGrantedAuthority> authorities = groups.stream().anyMatch(adminGroups::contains) ? List.of(ROLE_ADMIN, ROLE_USER) : List.of(ROLE_USER);
+            return new DefaultOidcUser(authorities, idToken);
         };
     }
-
-    /**
-     * OIDC authentication provider with authorities mapper which assigns authorities (roles) to users when they log in.
-     *
-     * @return AuthenticationProvider
-     */
-    @Bean
-    public AuthenticationProvider oidcAuthenticationProvider() {
-        // TODO: fully configurable roles
-        SimpleGrantedAuthority ROLE_ADMIN = new SimpleGrantedAuthority("ROLE_ADMIN");
-        SimpleGrantedAuthority ROLE_USER = new SimpleGrantedAuthority("ROLE_USER");
-
-        OIDCAuthenticationProvider authenticationProvider = new OIDCAuthenticationProvider();
-        authenticationProvider.setUserInfoFetcher(new CHUserInfoFetcher());
-
-        authenticationProvider.setAuthoritiesMapper((idToken, userInfo) -> {
-            if (userInfo instanceof CHUserInfo) {
-                CHUserInfo info = (CHUserInfo) userInfo;
-                return properties.getAdminGroups().stream().anyMatch(info.getLdapGroups()::contains) ?
-                        ImmutableSet.of(ROLE_ADMIN, ROLE_USER) : ImmutableSet.of(ROLE_USER);
-            }
-            return ImmutableSet.of();
-        });
-        return authenticationProvider;
-    }
-
-    /**
-     * OIDC authentication filter which does the actual authentication. The OIDC server and this client are
-     * registered through the respective services. We support only one OIDC issuer, hence the
-     * {@link StaticSingleIssuerService}.
-     *
-     * @return OIDCAuthenticationFilter
-     */
-    @Bean
-    public OIDCAuthenticationFilter oidcAuthenticationFilter() throws Exception {
-        OIDCAuthenticationFilter oidcFilter = new OIDCAuthenticationFilter();
-
-        oidcFilter.setAuthenticationManager(authenticationManager());
-
-        oidcFilter.setServerConfigurationService(serverConfigurationService());
-        oidcFilter.setClientConfigurationService(clientConfigurationService);
-
-        StaticSingleIssuerService issuer = new StaticSingleIssuerService();
-        issuer.setIssuer(properties.getIssuerUri());
-        oidcFilter.setIssuerService(issuer);
-        oidcFilter.setAuthRequestUrlBuilder(new PlainAuthRequestUrlBuilder());
-
-        return oidcFilter;
-    }
-
-    /**
-     * Dynamic server configuration service: the information at $issuerUri/.well-known/openid-configuration is used
-     * to configure the OIDC server.
-     *
-     * @return ServerConfigurationService
-     */
-    @Bean
-    public ServerConfigurationService serverConfigurationService() {
-        DynamicServerConfigurationService serverConfigurationService = new DynamicServerConfigurationService();
-        serverConfigurationService.setWhitelist(Collections.singleton(properties.getIssuerUri()));
-        return serverConfigurationService;
-    }
-
 }
+
+
+
+//
+//    /**
+//     * Configure the {@link HttpSecurity} object.
+//     */
+//    @Override
+//    protected void configure(HttpSecurity http) throws Exception {
+//        //@formatter:off
+//        http.
+//                addFilterBefore(oidcAuthenticationFilter(), AbstractPreAuthenticatedProcessingFilter.class)
+//                .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint())
+//                .and()
+//                .authorizeRequests()
+//                .antMatchers("/", "/api/**", "/login**", "/webjars/**", "/fonts/**", "/css/**", "/management/health").permitAll()
+//                .anyRequest().hasRole("ADMIN")
+//                .and()
+//                .formLogin()
+//                .loginPage("/login")
+//                .successForwardUrl("/dashboard")
+//                .permitAll()
+//                .and()
+//                .logout()
+//                .logoutSuccessUrl("/")
+//                .permitAll()
+//                .and()
+//                .csrf().disable();
+//        //@formatter:on
+//    }

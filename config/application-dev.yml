@@ -1,0 +1,72 @@
+spring.flyway.enabled: false
+
+spring:
+  mail:
+    host: localhost
+    port: 1025
+
+  # Thymeleaf
+  thymeleaf:
+    check-template: true
+    check-template-location: true
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML5
+    encoding: UTF-8
+    content-type: text/html
+
+  # DATABASE PROPERTIES
+  datasource:
+    driverClassName: org.hsqldb.jdbc.JDBCDriver
+    url: jdbc:hsqldb:mem:payments
+    username: sa
+    password:
+
+  data.jpa.repositories.enabled: true
+  jpa:
+    show-sql: false
+    database-platform: org.hibernate.dialect.HSQLDialect
+    database: HSQL
+    generate-ddl: true
+    hibernate.ddl-auto: create-drop
+    properties.hibernate.default_schema: PUBLIC
+
+server:
+  context-path: /payments/
+  port: 9000
+
+payments:
+  mail.sender: sender@mail.com
+
+  #This is the URL Mollie calls when an order gets an update.
+  # https://www.mollie.com/nl/docs/webhook
+  webhookUrl: https://ch.tudelft.nl
+
+  # The return Url is the URL to which the user is redirected after the payment.
+  # Can (and should) be overriden when creating a new order. This acts as a default fallback.
+  returnUrl: http://ch.tudelft.nl
+
+  molliekey: [CHANGE ME]
+  # connect.issuerUri: https://connect.ch.tudelft.nl/
+  # connect.clientUri: http://localhost:9000/
+  admin:
+    groups: chbeheer,bestuur,hoothub
+    username: admin
+    password: password
+
+  flyway:
+    enabled: false
+  security:
+    oauth2:
+      client:
+        registration:
+          wisvchconnect:
+#            client-id:
+#            client-secret:
+logging:
+  level:
+    org.springframework: DEBUG
+
+events:
+  username: CH Events
+  password: secret
