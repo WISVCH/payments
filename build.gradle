@@ -2,7 +2,7 @@ import org.springframework.boot.gradle.run.BootRunTask
 
 buildscript {
     ext {
-        springBootVersion = '1.5.14.RELEASE'
+        springBootVersion = '1.5.18.RELEASE'
     }
     repositories {
         mavenCentral()
@@ -55,7 +55,7 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-mail")
     compile("org.springframework.boot:spring-boot-starter-actuator")
 
-    compile('org.projectlombok:lombok')
+    compile('org.projectlombok:lombok:1.18.4')
     compile("org.hibernate:hibernate-validator")
     compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
     compile('com.jayway.jsonpath:json-path:2.4.0')
