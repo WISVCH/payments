@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -35,6 +36,7 @@ public class TestDataRunner implements CommandLineRunner {
     }
 
     @Override
+    @Transactional
     public void run(String... evt) throws Exception {
         Committee committee1 = committeeRepository.save(new Committee(CommitteeEnum.LUCIE, 2015));
         Committee committee2 = committeeRepository.save(new Committee(CommitteeEnum.AKCIE, 2014));

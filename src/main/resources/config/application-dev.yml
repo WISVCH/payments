@@ -1,0 +1,37 @@
+spring:
+  mail:
+    host: localhost
+    port: 1025
+
+  flyway.enabled: false
+
+  # DATABASE PROPERTIES
+  datasource:
+    driverClassName: org.hsqldb.jdbc.JDBCDriver
+    url: jdbc:hsqldb:mem:payments
+    username: sa
+    password:
+
+  data.jpa.repositories.enabled: true
+  jpa:
+    show-sql: false
+    database-platform: org.hibernate.dialect.HSQLDialect
+    database: HSQL
+    hibernate.ddl-auto: update
+
+  security:
+    oauth2:
+      client:
+        registration:
+          wisvchconnect:
+            client-id:
+            client-secret:
+
+
+events:
+  username: CH Events
+  password: secret
+
+logging:
+  level:
+    org.springframework: INFO
