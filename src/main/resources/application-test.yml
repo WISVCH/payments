@@ -21,9 +21,10 @@ spring:
   # Thymeleaf
   thymeleaf:
     mode: HTML
+  flyway:
+    enabled: false
 
 security.basic.enabled: false
-flyway.enabled: false
 
 # Serve connect
 server:
