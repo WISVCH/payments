@@ -10,11 +10,6 @@ import net.objecthunter.exp4j.ExpressionBuilder;
 public enum MollieMethodEnum {
 
     /**
-     * Bancontact (Belgium).
-     */
-//    BANCONTACT("bancontact", new ExpressionBuilder("1.01815 * x + 0.3025")),
-
-    /**
      * iDeal (Netherlands)
      */
     IDEAL("ideal", new ExpressionBuilder("x + 0.35")),

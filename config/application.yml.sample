@@ -1,33 +1,60 @@
 spring:
-  mail:
-    host: localhost
-    port: 1025
-
-  # Thymeleaf
-  thymeleaf:
-    check-template: true
-    check-template-location: true
-    prefix: classpath:/templates/
-    suffix: .html
-    mode: HTML5
-    encoding: UTF-8
-    content-type: text/html
-
-  # DATABASE PROPERTIES
   datasource:
+    # DATABASE PROPERTIES
     driverClassName: org.hsqldb.jdbc.JDBCDriver
+    # Change <MyDb> with the name of your database name
     url: jdbc:hsqldb:mem:payments
+
+    # Username to log in to the database
+    # It's recommended to create a dedicated Database user instead of using the default postgres user
     username: sa
+
+    # Password to log in with <MyDbPassword> in database <MyDb>
     password:
 
   data.jpa.repositories.enabled: true
+
   jpa:
+    # Set to false in production to prevent spamming of console
     show-sql: false
-    database-platform: org.hibernate.dialect.HSQLDialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     database: HSQL
     generate-ddl: true
-    hibernate.ddl-auto: create-drop
-    properties.hibernate.default_schema: PUBLIC
+    hibernate.hb2mddl.auto: create-drop
+
+    # This setting defines the database creation/update behaviour. Change with caution.
+    properties.hibernate.default_schema: public
+
+  thymeleaf:
+    # THYMELEAF (ThymeleafAutoConfiguration)
+    check-template: true
+    check-template-location: true
+    suffix: .html
+    mode: HTML
+    encoding: UTF-8
+    content-type: text/html
+
+  mail:
+    host: 127.0.0.1
+    port: 1025
+
+  security:
+    oauth2:
+      client:
+        provider:
+          wisvchconnect:
+            issuer-uri: https://connect.ch.tudelft.nl
+            clientUri: https://ch.tudelft.nl/payments/
+        registration:
+          wisvchconnect:
+            client-id: <client id>
+            client-secret: <client secret>
+            scope:
+              - openid
+              - profile
+              - email
+              - ldap
+
 
 flyway.enabled: false
 endpoints.cors:
@@ -41,6 +68,10 @@ security.basic.enabled: false
 server:
   context-path: /payments/
   port: 9000
+
+wisvch.connect:
+  # Change <MyLDAPgroup> to a LDAP group you're in (e.g. hoothub, dienst2, etc.)
+  admin-groups: chbeheer,bestuur
 
 payments:
   mail.sender: sender@mail.com
