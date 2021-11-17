@@ -9,6 +9,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -20,7 +21,10 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.CorsConfiguration;
@@ -61,11 +65,12 @@ public class ChConnectConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .cors()
                 .and()
+                .exceptionHandling().defaultAuthenticationEntryPointFor(getRestAuthenticationEntryPoint(), new AntPathRequestMatcher("/api/**"))
+                .and()
                 .csrf().disable()
                 .authorizeRequests()
                 .and().authorizeRequests()
-                .antMatchers("/", "/api/**", "/login**", "/webjars/**", "/fonts/**", "/css/**", "/actuator/health").permitAll()
-                .anyRequest().permitAll()
+                .antMatchers("/", "/login**", "/webjars/**", "/fonts/**", "/css/**", "/actuator/health").permitAll()
                 .and()
                 .formLogin()
                 .loginPage("/login")
@@ -77,6 +82,10 @@ public class ChConnectConfiguration extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .oauth2Login().userInfoEndpoint().oidcUserService(oidcUserService());
+    }
+
+    private AuthenticationEntryPoint getRestAuthenticationEntryPoint() {
+        return new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED);
     }
 
     /**

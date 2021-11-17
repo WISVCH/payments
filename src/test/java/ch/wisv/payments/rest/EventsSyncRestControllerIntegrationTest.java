@@ -6,7 +6,6 @@ import io.restassured.RestAssured;
 import io.restassured.http.Header;
 import org.apache.http.HttpStatus;
 import org.junit.Test;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.nio.charset.Charset;
 import java.util.Base64;
@@ -14,7 +13,6 @@ import java.util.Optional;
 
 import static junit.framework.TestCase.*;
 
-@ActiveProfiles("test")
 public class EventsSyncRestControllerIntegrationTest extends RestIntegrationTest {
 
     private final String PRODUCT_KEY = "1dc5dcf3-1d42-4ff5-ac97-bac899b7d12f";
