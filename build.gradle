@@ -3,6 +3,7 @@ import org.springframework.boot.gradle.run.BootRunTask
 buildscript {
     ext {
         springBootVersion = '1.5.18.RELEASE'
+        slf4jVersion = '2.15.0'
     }
     repositories {
         mavenCentral()
