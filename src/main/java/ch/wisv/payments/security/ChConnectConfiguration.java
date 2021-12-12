@@ -23,7 +23,6 @@ import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -72,10 +71,7 @@ public class ChConnectConfiguration extends WebSecurityConfigurerAdapter {
                 .and().authorizeRequests()
                 .antMatchers("/", "/login**", "/webjars/**", "/fonts/**", "/css/**", "/actuator/health").permitAll()
                 .and()
-                .formLogin()
-                .loginPage("/login")
-                .successForwardUrl("/dashboard")
-                .permitAll()
+                .httpBasic()
                 .and()
                 .logout()
                 .logoutSuccessUrl("/")
