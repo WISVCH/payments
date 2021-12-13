@@ -34,7 +34,7 @@ public class CommitteeServiceImpl implements CommitteeService {
 
     @Override
     public Committee getCommitteeById(int committeeId) {
-        return committeeRepository.findById(committeeId).orElseThrow();
+        return committeeRepository.getById(committeeId);
     }
 
     @Override
