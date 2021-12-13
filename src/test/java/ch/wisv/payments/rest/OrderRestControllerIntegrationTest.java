@@ -8,14 +8,20 @@ import ch.wisv.payments.model.Product;
 import io.restassured.RestAssured;
 import io.restassured.http.Header;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@RunWith(SpringRunner.class)
+@ActiveProfiles("test")
 public class OrderRestControllerIntegrationTest extends RestIntegrationTest {
 
     @Test

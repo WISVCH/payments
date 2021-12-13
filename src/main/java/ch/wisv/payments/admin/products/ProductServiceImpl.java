@@ -46,7 +46,7 @@ public class ProductServiceImpl implements ProductService {
                 productRequest.getAvailableProducts());
 
         if (productRequest.getGroupId() != 0) {
-            ProductGroup group = productGroupRepository.findOne(productRequest.getGroupId());
+            ProductGroup group = productGroupRepository.getById(productRequest.getGroupId());
             product.setProductGroup(group);
         }
 
@@ -70,7 +70,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void addProductToGroup(Product product, ProductGroup productGroup) {
 
-        Product currentProduct = productRepository.findOne(product.getId());
+        Product currentProduct = productRepository.getById(product.getId());
 
         currentProduct.setProductGroup(productGroup);
         productRepository.save(currentProduct);
@@ -80,7 +80,7 @@ public class ProductServiceImpl implements ProductService {
     public void editProduct(ProductRequest productRequest) {
         if (productRequest.getId() != 0) {
             Committee committee = committeeService.getCommitteeById(productRequest.getCommitteeId());
-            Product product = productRepository.findOne(productRequest.getId());
+            Product product = productRepository.getById(productRequest.getId());
 
             product.setName(productRequest.getName());
             product.setDescription(productRequest.getDescription());
@@ -92,7 +92,7 @@ public class ProductServiceImpl implements ProductService {
             product = productRepository.saveAndFlush(product);
 
             if (productRequest.getGroupId() != 0) {
-                ProductGroup group = productGroupRepository.findOne(productRequest.getGroupId());
+                ProductGroup group = productGroupRepository.getById(productRequest.getGroupId());
                 addProductToGroup(product, group);
             } else {
                 product.setProductGroup(null);
@@ -108,13 +108,13 @@ public class ProductServiceImpl implements ProductService {
         if (orders.size() > 0) {
             throw new ProductInUseException("Products are already ordered");
         } else {
-            productRepository.delete(productId);
+            productRepository.deleteById(productId);
         }
     }
 
     @Override
     public Product getProductById(Integer productId) {
-        return productRepository.findOne(productId);
+        return productRepository.getById(productId);
     }
 
     @Override
@@ -131,7 +131,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public boolean isProductAvailable(Integer productId) {
-        Product product = productRepository.findOne(productId);
+        Product product = productRepository.getById(productId);
         List<Order> orders = orderService.getOrdersByProductId(productId);
 
         // Count the number of products with the given ID in each order.
@@ -145,14 +145,14 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductGroup getProductGroupById(Integer productGroupId) {
-        return productGroupRepository.findOne(productGroupId);
+        return productGroupRepository.getById(productGroupId);
     }
 
     @Override
     public void editProductGroup(ProductGroupRequest productGroupRequest) {
         if (productGroupRequest.getId() != 0) {
             Committee committee = committeeService.getCommitteeById(productGroupRequest.getCommitteeId());
-            ProductGroup productGroup = productGroupRepository.findOne(productGroupRequest.getId());
+            ProductGroup productGroup = productGroupRepository.getById(productGroupRequest.getId());
 
             productGroup.setCommittee(committee);
             productGroup.setName(productGroupRequest.getName());
@@ -165,11 +165,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteProductGroup(int productGroupId) {
-        ProductGroup productGroup = productGroupRepository.findOne(productGroupId);
+        ProductGroup productGroup = productGroupRepository.getById(productGroupId);
         if (!productGroup.getProducts().isEmpty()) {
             throw new ProductGroupInUseException("Product group must be empty");
         } else {
-            productGroupRepository.delete(productGroupId);
+            productGroupRepository.deleteById(productGroupId);
         }
     }
 }

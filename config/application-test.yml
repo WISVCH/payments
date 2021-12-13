@@ -15,29 +15,28 @@ spring:
     database-platform: org.hibernate.dialect.HSQLDialect
     database: HSQL
     generate-ddl: true
-    hibernate.ddl-auto: create-drop
+    hibernate.hb2mddl.auto: create-drop
     properties.hibernate.default_schema: PUBLIC
 
   # Thymeleaf
   thymeleaf:
     mode: HTML
+  security:
+    ignored: /**
 
-security.basic.enabled: false
-flyway.enabled: false
+  flyway.enabled: false
 
 # Serve connect
 server:
-  context-path: /payments/
+  servlet:
+    context-path: /payments/
 
 #Spring Boot Actuator endpoint settings
 management:
   context-path: /management
-  security.roles: ROLE_ADMIN
-
-# Disable all endpoints except health
-endpoints:
-  enabled: false
-  health.enabled: true
+  endpoints:
+    enabled: false
+    health.enabled: true
 
 connect:
   issuerUri: https://connect.ch.tudelft.nl/
