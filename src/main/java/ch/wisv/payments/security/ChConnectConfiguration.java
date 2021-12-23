@@ -72,6 +72,7 @@ public class ChConnectConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .and().authorizeRequests()
                 .antMatchers("/", "/login**", "/webjars/**", "/fonts/**", "/css/**", "/actuator/health").permitAll()
+                .anyRequest().hasRole("ADMIN")
                 .and()
                 .httpBasic()
                 .and()
