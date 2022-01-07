@@ -27,7 +27,7 @@ public class OrderController {
 
     @GetMapping
     String orders(Model model) {
-        model.addAttribute("orders", orderService.getAllOrders());
+        model.addAttribute("orders", orderService.getOrdersByCreationDateDesc());
 
         return "orders";
     }

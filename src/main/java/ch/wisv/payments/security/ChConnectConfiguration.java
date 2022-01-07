@@ -51,13 +51,6 @@ public class ChConnectConfiguration extends WebSecurityConfigurerAdapter {
     private List<String> adminGroups;
 
     /**
-     * List of all the users that are allowed in the beta.
-     */
-    @Getter
-    @Setter
-    private List<String> betaUsers;
-
-    /**
      * The configuration of the authentication.
      * @param http
      * @throws Exception

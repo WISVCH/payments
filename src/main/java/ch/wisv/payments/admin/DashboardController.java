@@ -24,8 +24,7 @@ public class DashboardController {
 
     @RequestMapping("/dashboard")
     String dashboard(Model model) {
-        List<Order> orders = orderService.getAllOrders().stream().limit(10).collect(Collectors.toList());
-        Collections.reverse(orders);
+        List<Order> orders = orderService.getOrdersByCreationDateDesc().stream().limit(10).collect(Collectors.toList());
         model.addAttribute("orders", orders);
         return "dashboard";
     }

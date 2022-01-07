@@ -20,5 +20,7 @@ public interface OrderService {
 
     List<Order> getOrdersByCommittee(Committee committee);
 
+    List<Order> getOrdersByCreationDateDesc();
+
     Float getTransactionCostByCommittee(Committee committee);
 }

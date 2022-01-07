@@ -152,6 +152,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<Order> getOrdersByCreationDateDesc() {
+        return orderRepository.findAllByOrderByCreationDateDesc();
+    }
+
+    @Override
     public Float getTransactionCostByCommittee(Committee committee) {
         List<Order> orders = getOrdersByCommittee(committee);
         float cost = 0;
