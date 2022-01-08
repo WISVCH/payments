@@ -1,21 +1,26 @@
 package ch.wisv.payments.rest;
 
+import be.woutschoovaerts.mollie.Client;
+import be.woutschoovaerts.mollie.ClientBuilder;
+import be.woutschoovaerts.mollie.data.common.Amount;
+import be.woutschoovaerts.mollie.data.payment.PaymentMethod;
+import be.woutschoovaerts.mollie.data.payment.PaymentRequest;
+import be.woutschoovaerts.mollie.data.payment.PaymentResponse;
+import be.woutschoovaerts.mollie.data.payment.PaymentStatus;
+import be.woutschoovaerts.mollie.exception.MollieException;
 import ch.wisv.payments.model.Order;
 import ch.wisv.payments.model.OrderResponse;
 import ch.wisv.payments.model.OrderStatus;
 import ch.wisv.payments.model.Product;
 import ch.wisv.payments.rest.repository.OrderRepository;
-import nl.stil4m.mollie.Client;
-import nl.stil4m.mollie.ClientBuilder;
-import nl.stil4m.mollie.ResponseOrError;
-import nl.stil4m.mollie.domain.CreatePayment;
-import nl.stil4m.mollie.domain.Payment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -43,46 +48,57 @@ public class MolliePaymentService implements PaymentService {
     public OrderResponse registerOrder(Order order) {
         Map<String, Object> metadata = new HashMap<>();
 
-        Optional<String> method = Optional.of(order.getMethod().getName());
+        PaymentMethod method;
+
+        if(order.getMethod().getName().equals("ideal")){
+            method = PaymentMethod.IDEAL;
+
+        } else{
+            method = PaymentMethod.SOFORT;
+        }
+
 
         if (order.getReturnURL() != null) {
             returnUrl = order.getReturnURL();
         }
 
-        double amount = order.getProducts().stream()
+        double value = order.getProducts().stream()
                 .mapToDouble(Product::getPrice)
                 .sum();
 
-        amount = order.getMethod().calculateCostIncludingTransaction(amount);
-
-        CreatePayment payment = new CreatePayment(method, amount, "W.I.S.V. 'Christiaan Huygens' Payments",
-                returnUrl + "?reference=" + order.getPublicReference(), Optional.of(webhookUrl), metadata);
+        value = order.getMethod().calculateCostIncludingTransaction(value);
+        Amount paymentAmount = Amount.builder().value(BigDecimal.valueOf(value)).currency("EUR").build();
+        PaymentRequest paymentRequest = PaymentRequest.builder()
+                .method(Optional.of(List.of(method)))
+                .amount(paymentAmount)
+                .consumerName(Optional.of("W.I.S.V. 'Christiaan Huygens' Payments"))
+                .redirectUrl(Optional.of(returnUrl + "?reference=" + order.getPublicReference()))
+                .webhookUrl(Optional.of(webhookUrl))
+                .metadata(metadata)
+                .build();
 
         //First try is for IOExceptions coming from the Mollie Client.
         try {
             // Create the payment over at Mollie
-            ResponseOrError<Payment> molliePayment = mollie.payments().create(payment);
+            PaymentResponse molliePayment = mollie.payments().createPayment(paymentRequest);
 
-            if (molliePayment.getSuccess()) {
-                // All good, update the order
-                updateOrder(order, molliePayment);
-                return new OrderResponse(order);
-            } else {
-                // Mollie returned an error.
-                handleMollieError(molliePayment);
-                return null;
-            }
+            // All good, update the order
+            updateOrder(order, molliePayment);
+            return new OrderResponse(order);
+
         } catch (IOException e) {
             // This indicates the HttpClient encountered some error
             throw new RuntimeException("Could not connect to the Paymentprovider");
+        } catch(MollieException e) {
+            handleMollieError(e);
         }
     }
 
-    private void updateOrder(Order order, ResponseOrError<Payment> molliePayment) {
+    private void updateOrder(Order order, PaymentResponse molliePayment) {
         // Insert the Mollie ID for future providerReference
-        order.setProviderReference(molliePayment.getData().getId());
+        order.setProviderReference(molliePayment.getId());
         order.setStatus(OrderStatus.WAITING);
-        order.setPaymentURL(molliePayment.getData().getLinks().getPaymentUrl());
+        order.setPaymentURL(molliePayment.getLinks().getCheckout().getHref());
 
         // Save the changes to the order
         orderRepository.saveAndFlush(order);
@@ -106,52 +122,42 @@ public class MolliePaymentService implements PaymentService {
         // This try is for the Mollie API internal HttpClient
         try {
             // Request a payment from Mollie
-            ResponseOrError<Payment> paymentResponseOrError = mollie.payments().get(order.getProviderReference());
+            PaymentResponse paymentResponse = mollie.payments().getPayment(order.getProviderReference());
 
-            // If the request was a success, we can update the order
-            if (paymentResponseOrError.getSuccess()) {
-                // There are a couple of possible statuses. Enum would have been nice. We select a couple of relevant
-                // statuses to translate to our own status.
-                switch (paymentResponseOrError.getData().getStatus()) {
-                    case "pending": {
-                        order.setStatus(OrderStatus.WAITING);
-                        break;
-                    }
-                    case "cancelled": {
-                        order.setStatus(OrderStatus.CANCELLED);
-                        break;
-                    }
-                    case "expired": {
-                        order.setStatus(OrderStatus.EXPIRED);
-                        break;
-                    }
-                    case "paid": {
-                        if (!order.getStatus().equals(OrderStatus.PAID) && order.isMailConfirmation()) {
-                            mailService.sendOrderConfirmation(order);
-                        }
-                        order.setStatus(OrderStatus.PAID);
-                        break;
-                    }
-                    case "paidout": {
-                        order.setStatus(OrderStatus.PAID);
-                        break;
-                    }
+            // There are a couple of possible statuses. Enum would have been nice. We select a couple of relevant
+            // statuses to translate to our own status.
+
+            switch (paymentResponse.getStatus()) {
+                case PENDING: {
+                    order.setStatus(OrderStatus.WAITING);
+                    break;
                 }
-                return orderRepository.save(order);
-            } else {
-                // Order status could not be updated for some reason. Return the original order
-                handleMollieError(paymentResponseOrError);
-                return order;
+                case CANCELED: {
+                    order.setStatus(OrderStatus.CANCELLED);
+                    break;
+                }
+                case EXPIRED: {
+                    order.setStatus(OrderStatus.EXPIRED);
+                    break;
+                }
+                case PAID: {
+                    if (!order.getStatus().equals(OrderStatus.PAID) && order.isMailConfirmation()) {
+                        mailService.sendOrderConfirmation(order);
+                    }
+                    order.setStatus(OrderStatus.PAID);
+                    break;
+                }
             }
-        } catch (IOException e) {
-            // This indicates the HttpClient encountered some error
-            throw new RuntimeException(e.getMessage());
+                return orderRepository.save(order);
+        } catch (MollieException e) {
+            handleMollieError(e);
+            return order;
         }
     }
 
-    private void handleMollieError(ResponseOrError<?> mollieResponseWithError) {
+    private void handleMollieError(MollieException mollieException) {
         // Some error occured, but connection to Mollie succeeded, which means they have something to say.
-        Map molliePaymentError = mollieResponseWithError.getError();
+        Map molliePaymentError = mollieException.getDetails();
 
         // Make the compiler shut up, this is something stupid in the Mollie API Client
         Map error = (Map) molliePaymentError.get("error");
