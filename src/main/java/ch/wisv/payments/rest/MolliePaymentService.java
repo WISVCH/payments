@@ -6,7 +6,6 @@ import be.woutschoovaerts.mollie.data.common.Amount;
 import be.woutschoovaerts.mollie.data.payment.PaymentMethod;
 import be.woutschoovaerts.mollie.data.payment.PaymentRequest;
 import be.woutschoovaerts.mollie.data.payment.PaymentResponse;
-import be.woutschoovaerts.mollie.data.payment.PaymentStatus;
 import be.woutschoovaerts.mollie.exception.MollieException;
 import ch.wisv.payments.model.Order;
 import ch.wisv.payments.model.OrderResponse;
@@ -86,11 +85,9 @@ public class MolliePaymentService implements PaymentService {
             updateOrder(order, molliePayment);
             return new OrderResponse(order);
 
-        } catch (IOException e) {
-            // This indicates the HttpClient encountered some error
-            throw new RuntimeException("Could not connect to the Paymentprovider");
         } catch(MollieException e) {
             handleMollieError(e);
+            return null;
         }
     }
 
