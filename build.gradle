@@ -71,7 +71,7 @@ dependencies {
     implementation"org.thymeleaf:thymeleaf"
     implementation"org.thymeleaf.extras:thymeleaf-extras-springsecurity5"
 
-    implementation "be.woutschoovaerts:mollie:3.6.1"
+    implementation "nl.stil4m:mollie-api:2.7.0"
 
     implementation 'org.springframework.boot:spring-boot-configuration-processor'
 
