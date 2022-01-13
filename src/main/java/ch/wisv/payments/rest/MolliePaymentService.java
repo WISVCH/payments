@@ -70,7 +70,7 @@ public class MolliePaymentService implements PaymentService {
         PaymentRequest paymentRequest = PaymentRequest.builder()
                 .method(Optional.of(List.of(method)))
                 .amount(paymentAmount)
-                .consumerName(Optional.of("W.I.S.V. 'Christiaan Huygens' Payments"))
+                .description("W.I.S.V. 'Christiaan Huygens' Payments")
                 .redirectUrl(Optional.of(returnUrl + "?reference=" + order.getPublicReference()))
                 .webhookUrl(Optional.of(webhookUrl))
                 .metadata(metadata)
