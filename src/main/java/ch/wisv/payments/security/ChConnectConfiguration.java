@@ -60,15 +60,12 @@ public class ChConnectConfiguration extends WebSecurityConfigurerAdapter {
                 .cors()
                 .and()
                 .authorizeRequests()
+                .antMatchers("/api/**").permitAll()
                 .antMatchers("/", "/login**", "/webjars/**", "/fonts/**", "/css/**", "/actuator/health").permitAll()
-                .and()
-                .exceptionHandling().defaultAuthenticationEntryPointFor(getRestAuthenticationEntryPoint(), new AntPathRequestMatcher("/api/**"))
+                .anyRequest().hasRole("ADMIN")
                 .and()
                 .csrf().disable()
                 .authorizeRequests()
-                .and()
-                .authorizeRequests()
-                .anyRequest().hasRole("ADMIN")
                 .and()
                 .httpBasic()
                 .and()
@@ -77,10 +74,6 @@ public class ChConnectConfiguration extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .oauth2Login().userInfoEndpoint().oidcUserService(oidcUserService());
-    }
-
-    private AuthenticationEntryPoint getRestAuthenticationEntryPoint() {
-        return new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED);
     }
 
     /**
