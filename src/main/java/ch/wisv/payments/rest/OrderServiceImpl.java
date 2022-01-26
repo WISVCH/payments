@@ -74,7 +74,7 @@ public class OrderServiceImpl implements OrderService {
             order.setReturnURL(returnUrl);
         }
 
-        return orderRepository.save(order);
+        return orderRepository.saveAndFlush(order);
     }
 
     private void validateProductLimits(List<Product> products, int orderSize) {

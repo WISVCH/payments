@@ -74,6 +74,6 @@ public abstract class RestIntegrationTest {
         Committee committee = getOrPersistW3Cie();
         long count = productRepository.count();
         Product product = new Product(committee, "Product" + count, "Product" + count + " description", count, 0, 0);
-        return productRepository.save(product);
+        return productRepository.saveAndFlush(product);
     }
 }
