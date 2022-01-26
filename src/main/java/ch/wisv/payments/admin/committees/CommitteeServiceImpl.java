@@ -29,7 +29,7 @@ public class CommitteeServiceImpl implements CommitteeService {
         if (committeeRepository.findOneByNameAndYear(committee.getName(), committee.getYear()).isPresent()) {
             throw new DuplicateKeyException("Committee already exists!");
         }
-        committeeRepository.save(committee);
+        committeeRepository.saveAndFlush(committee);
     }
 
     @Override

@@ -145,7 +145,8 @@ public class MolliePaymentService implements PaymentService {
                     break;
                 }
             }
-            return orderRepository.save(order);
+            return orderRepository.saveAndFlush(order);
+
         } catch (MollieException e) {
             handleMollieError(e);
             return order;

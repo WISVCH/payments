@@ -43,7 +43,7 @@ public class EventsSyncProductServiceImpl implements EventsSyncProductService {
 
         this.changeProductValues(product, productEventsSync);
 
-        productRepository.save(product);
+        productRepository.saveAndFlush(product);
     }
 
     /**
@@ -55,7 +55,7 @@ public class EventsSyncProductServiceImpl implements EventsSyncProductService {
 
         this.changeProductValues(product, productEventsSync);
 
-        productRepository.save(product);
+        productRepository.saveAndFlush(product);
     }
 
     /**
@@ -88,7 +88,7 @@ public class EventsSyncProductServiceImpl implements EventsSyncProductService {
                 .orElse(new Committee(committeeEnum, year));
 
         if (committee.getId() == 0) {
-            committeeRepository.save(committee);
+            committeeRepository.saveAndFlush(committee);
         }
 
         product.setCommittee(committee);

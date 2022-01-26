@@ -74,7 +74,7 @@ public class TestDataRunner implements CommandLineRunner {
                 new Order(Collections.singletonList(sympoBurger), "Charlie Dodson", "charlie@dodson.com"));
         Order order4 = orderRepository.save(
                 new Order(Arrays.asList(sympoBurger, sympoStudent, lucie), "Dick Edison", "dick@edison.com"));
-        Order order5 = orderRepository.save(
+        Order order5 = orderRepository.saveAndFlush(
                 new Order(Collections.singletonList(lucie), "Eddie F", "dick@edison.com"));
     }
 }

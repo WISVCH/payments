@@ -50,7 +50,7 @@ public class ProductServiceImpl implements ProductService {
             product.setProductGroup(group);
         }
 
-        productRepository.save(product);
+        productRepository.saveAndFlush(product);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class ProductServiceImpl implements ProductService {
         ProductGroup group = new ProductGroup(productGroupRequest.getName(),
                 productGroupRequest.getDescription(), productGroupRequest.getGroupLimit(), committee);
 
-        productGroupRepository.save(group);
+        productGroupRepository.saveAndFlush(group);
     }
 
     @Override
@@ -73,7 +73,7 @@ public class ProductServiceImpl implements ProductService {
         Product currentProduct = productRepository.getById(product.getId());
 
         currentProduct.setProductGroup(productGroup);
-        productRepository.save(currentProduct);
+        productRepository.saveAndFlush(currentProduct);
     }
 
     @Override
@@ -96,7 +96,7 @@ public class ProductServiceImpl implements ProductService {
                 addProductToGroup(product, group);
             } else {
                 product.setProductGroup(null);
-                productRepository.save(product);
+                productRepository.saveAndFlush(product);
             }
         }
     }
