@@ -103,7 +103,7 @@ public class EventsSyncRestControllerIntegrationTest extends RestIntegrationTest
         RestAssured.given().
             body(body).
         when().
-            header(new Header("Authorization", "Basic " + credentials)).
+            header(new Header("EventAuthorization", "Basic " + credentials)).
             header(new Header("Content-Type", "application/json")).
             post("/payments/api/chevents/sync/product/").
         then().

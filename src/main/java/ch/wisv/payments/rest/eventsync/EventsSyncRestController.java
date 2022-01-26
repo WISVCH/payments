@@ -51,7 +51,7 @@ public class EventsSyncRestController {
 
     @PostMapping("/product/")
     public ResponseEntity<?> eventSync(HttpServletRequest request, @RequestBody ProductEventsSync productEventsSync) {
-        String[] credentials = this.decryptBasicAuthHeader(request.getHeader("Authorization"));
+        String[] credentials = this.decryptBasicAuthHeader(request.getHeader("EventAuthorization"));
 
         if (!this.authChEvents(credentials)) {
             return createResponseEntity(HttpStatus.UNAUTHORIZED, "User is not authorized", null);
